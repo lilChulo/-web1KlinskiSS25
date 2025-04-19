@@ -1,12 +1,53 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deep Research</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Landing Page</title>
+  <link rel="stylesheet" href="../css/styles.css" />
 </head>
 <body>
-  <h1>Willkommen auf meiner Webseite!!</h1>
-  <p>Dies ist die Startseite meiner Webseite.</p>
+  
+  <!--Top-Menü (STart impressum) -->
+  <nav>
+    <a href="/" id="nav-root"> Start</a>
+    <a href="/html/impressum.html" id="nav-impressum">Impressum</a>
+  </nav>
+
+  <main>
+
+  <!--Login-Dialog-->
+  <div id="login-dialog">
+    <h2>Login</h2>
+    <input type="text" placeholder="Benutzername" id="login-username" />
+    <input type="password" placeholder="Passwort" id="login-password" />
+    <button id="login-button">Login</button>
+    <p>Noch kein Account? <a href="#" onclick="toggleForms()">Registrieren</a></p>
+  </div>
+
+  <!--Registrierungs-Dialog-->
+
+
+  <div id="register-dialog" style="display: none;">
+
+    <h2>Registrierung</h2>
+    <input type="text" placeholder="Benutzername" id="register-username" />
+    <input type="password" placeholder="Passwort" id="register-password" />
+    <button id="register-button">Registrieren</button>
+    <p>Schon registriert? <a href="#" onclick="toggleForms()">Zurück zum Login</a></p>
+  </div>
+
+  <!--JavaScript-Code-->
+  <script>
+    function toggleForms() {
+      const login = document.getElementById("login-dialog");
+      const register = document.getElementById("register-dialog");
+      
+      const isLoginVisible = login.style.display !== "none";
+      login.style.display = isLoginVisible ? "none" : "block";
+      register.style.display = isLoginVisible ? "block" : "none";
+    }
+  </script>
+
 </body>
 </html>
