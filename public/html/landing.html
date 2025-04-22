@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!--aus reddit (skaliert auf kleinen bildschirm, (Handy)) -->
   <title>Landing Page</title>
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
@@ -11,12 +11,12 @@
   <!--Top-Menü (STart impressum) -->
   <nav>
     <a href="/" id="nav-root"> Start</a>
-    <a href="/html/impressum.html" id="nav-impressum">Impressum</a>
+    <a href="../html/impressum.html" id="nav-impressum">Impressum</a>
   </nav>
 
   <main>
 
-  <!--Login-Dialog-->
+  <!--Login-bereich-->
   <div id="login-dialog">
     <h2>Login</h2>
     <input type="text" placeholder="Benutzername" id="login-username" />
@@ -25,7 +25,7 @@
     <p>Noch kein Account? <a href="#" onclick="toggleForms()">Registrieren</a></p>
   </div>
 
-  <!--Registrierungs-Dialog-->
+  <!--Registrierungs-Bereich-->
 
 
   <div id="register-dialog" style="display: none;">
@@ -42,8 +42,8 @@
     function toggleForms() {
       const login = document.getElementById("login-dialog");
       const register = document.getElementById("register-dialog");
-      
-      const isLoginVisible = login.style.display !== "none";
+
+      const isLoginVisible = login.style.display !== "none"; <!-- angucken was das macht -->
       login.style.display = isLoginVisible ? "none" : "block";
       register.style.display = isLoginVisible ? "block" : "none";
     }
