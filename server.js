@@ -3,16 +3,15 @@ const express = require('express');
 const app = express();
 const port = 80;
 
+// Statische Dateien bereitstellen (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.static(path.join(__dirname, 'public', 'js')));
-
+// Root-Route: Landing Page (landing.html)
 app.get('/', (req, res) => {
- 
-  const filePath = path.join(__dirname, 'public', 'js', 'index.html');
-  console.log('Pfad zu index.html:', filePath); 
-  res.sendFile(filePath);
+  res.sendFile(path.join(__dirname, 'public', 'html', 'landing.html'));
 });
 
+// Server starten
 app.listen(port, () => {
   console.log(`Server läuft auf http://localhost:${port}`);
 });
