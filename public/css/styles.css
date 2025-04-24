@@ -1,0 +1,82 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  /* Top-Menü */
+  nav {
+    background-color: #003366;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+  }
+  
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  nav a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Layout */
+  main {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Dialoge */
+  #login-dialog,
+  #register-dialog {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-top: 2rem;
+  }
+  
+  input {
+    display: block;
+    margin: 1rem 0;
+    padding: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  button {
+    padding: 0.7rem 1.2rem;
+    background-color: #003366;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button:hover {
+    background-color: #0055aa;
+  }
+  
+  /* Tabelle */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+  }
+  
+  table th,
+  table td {
+    border: 1px solid #ccc;
+    padding: 0.8rem;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #eee;
+  }
+  
