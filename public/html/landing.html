@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!--aus reddit (skaliert auf kleinen bildschirm, (Handy)) -->
+  
   <title>Landing Page</title>
+  
+  
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
 <body>
   
   <!--Top-Menü (STart impressum) -->
   <nav>
-    <!--<a href="/" id="nav-root"> Start</a> -->            <!-- das vielleicht weg machen, weil start bei landing wenig sinn macht-->
+    <!-- <a href="/" id="nav-root"> Start</a>  -->         <!-- das vielleicht weg machen, weil start bei landing wenig sinn macht-->
     <a href="../html/impressum.html" id="nav-impressum">Impressum</a>
   </nav>
 
@@ -47,6 +51,13 @@
       login.style.display = isLoginVisible ? "none" : "block";
       register.style.display = isLoginVisible ? "block" : "none";
     }
+
+    document.getElementById("login-button").addEventListener("click", function () {
+      // stack OverFlow
+      window.location.href = "../html/start.html";
+    });
+
+
   </script>
 
 </body>
