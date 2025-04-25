@@ -12,14 +12,45 @@
 <body>
 
 
-    <nav>
+    <nav>  <!-- Menü oben-->
 
-        <a href="/html/start.html" id="nav-root">Start</a>
-        <a href="/html/impressum.html" id="nav-impressum">Impressum</a>
+        <a href="/html/start.html" id="nav-root">Start</a> 
+        <a href="../html/impressum.html" id="nav-impressum">Impressum</a>
         <a href="/" id="nav-logout">Logout</a>
       
     </nav>
 
+    <main>
+        <h1 id="user-management-title">User Management</h1>
 
-    
+         <!-- Button -->
+    <button id="add-user-button">User hinzufügen</button>
+
+    <!-- Tabelle -->
+    <table id="user-table">
+      <thead>
+        <tr>
+          <th>User-ID</th>
+          <th>Rolle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="user-id-admin">admin</td>
+          <td id="user-role-admin">Administrator</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    document.getElementById("nav-logout").addEventListener("click", function (event) {
+      event.preventDefault(); // chatgpt
+      window.location.href = "../html/landing.html"; 
+    });
+  </script>
+  
+
 </body>
+</html>
+    
