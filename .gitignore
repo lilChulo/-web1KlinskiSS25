@@ -1,0 +1,15 @@
+# Ignoriere node_modules (für Node.js-Projekte)
+node_modules/
+
+# Ignoriere Build-Ordner (für TypeScript-Projekte)
+dist/
+
+# Ignoriere Log-Dateien
+*.log
+
+# Ignoriere alle .env-Dateien (z.B. für Umgebungsvariablen)
+*.env
+
+# Ignoriere IDE-spezifische Dateien (z.B. für Visual Studio Code)
+.vscode/
+.idea/
