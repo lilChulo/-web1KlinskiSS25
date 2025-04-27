@@ -80,3 +80,25 @@ body {
     background-color: #eee;
   }
   
+  /* Impressum-Layout */
+.impressum-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.block {
+  flex: 1;
+}
+
+.impressum-container h2 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.impressum-container p {
+  margin: 5px 0;
+  line-height: 1.5;
+}
