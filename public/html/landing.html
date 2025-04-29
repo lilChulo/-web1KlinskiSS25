@@ -11,50 +11,52 @@
   <link rel="stylesheet" href="../css/styles.css" />
 </head>
 <body>
-  
-  <!--Top-Menü (STart impressum) -->
-  <nav>
-    <!-- <a href="/" id="nav-root"> Start</a>  -->  <!-- das vielleicht weg machen, weil start bei landing wenig sinn macht-->
-    <a href="../html/landing.html" id="nav-root">WE-1 SPA</a>
 
-    <a href="../html/impressum.html" id="nav-impressum">Impressum</a>
+  <!-- Top-Menü (Start, Impressum) -->
+  <nav id="TopMenu">
+    <!-- <a href="/" id="nav-root"> Start</a>  -->  <!-- das vielleicht weg machen, weil start bei landing wenig sinn macht-->
+    <a href="../html/landing.html" id="LinkRoot">WE-1 SPA</a>
+    <a href="../html/impressum.html" id="LinkImpressum">Impressum</a>
   </nav>
 
-  <main>
+  <main id="LandingPage">
 
-  <!--Login-bereich-->
-  <div id="login-dialog">
-    <h2>Login</h2>
-    <input type="text" placeholder="Benutzername" id="login-username" />
-    <input type="password" placeholder="Passwort" id="login-password" />
-    <button id="login-button">Login</button>
-    <p>Noch kein Account? <a href="#" onclick="toggleForms()">Registrieren</a></p>
-  </div>
+    <!-- Login-Bereich -->
+    <div id="FormLogin">
+      <h2>Login</h2>
+      <input type="text" placeholder="Benutzername" id="FormLoginUsername" />
+      <input type="password" placeholder="Passwort" id="FormLoginPassword" />
+      <button id="ButtonLoginUser">Login</button>
+      <p>Noch kein Account? 
+        <a href="#" id="LinkShowSignupDialog" onclick="toggleForms()">Registrieren</a>
+      </p>
+    </div>
 
-  <!--Registrierungs-Bereich-->
+    <!-- Registrierungs-Bereich -->
+    <div id="FormSignup" style="display: none;">
+      <h2>Registrierung</h2>
+      <input type="text" placeholder="Benutzername" id="FormSignupUsername" />
+      <input type="password" placeholder="Passwort" id="FormSignupPassword" />
+      <button id="ButtonSignupUser">Registrieren</button>
+      <p>Schon registriert? 
+        <a href="#" id="LinkShowLoginDialog" onclick="toggleForms()">Zurück zum Login</a>
+      </p>
+    </div>
 
-
-  <div id="register-dialog" style="display: none;">
-
-    <h2>Registrierung</h2>
-    <input type="text" placeholder="Benutzername" id="register-username" />
-    <input type="password" placeholder="Passwort" id="register-password" />
-    <button id="register-button">Registrieren</button>
-    <p>Schon registriert? <a href="#" onclick="toggleForms()">Zurück zum Login</a></p>
-  </div>
+  </main>
 
   <!--JavaScript-Code-->
   <script>
     function toggleForms() {
-      const login = document.getElementById("login-dialog");
-      const register = document.getElementById("register-dialog");
+      const login = document.getElementById("FormLogin");
+      const register = document.getElementById("FormSignup");
 
       const isLoginVisible = login.style.display !== "none"; <!-- angucken was das macht -->
       login.style.display = isLoginVisible ? "none" : "block";
       register.style.display = isLoginVisible ? "block" : "none";
     }
 
-    document.getElementById("login-button").addEventListener("click", function () {
+    document.getElementById("ButtonLoginUser").addEventListener("click", function () {
       // stack OverFlow
       window.location.href = "../html/start.html";
     });
