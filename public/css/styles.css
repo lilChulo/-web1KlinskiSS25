@@ -80,8 +80,8 @@ body {
     background-color: #eee;
   }
   
-  .edit-btn {
-    background-color: #28a745; /* grünes Bootstrap-Grün */
+  #adminTableItemEditButton {
+    background-color: #28a745;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -89,12 +89,12 @@ body {
     cursor: pointer;
   }
   
-  .edit-btn:hover {
-    background-color: #218838; /* dunkleres Grün beim Hover */
+  #adminTableItemEditButton:hover {
+    background-color: #218838;
   }
   
-  .delete-btn {
-    background-color: #dc3545; /* rotes Bootstrap-Rot */
+  #adminTableItemDeleteButton {
+    background-color: #dc3545;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -102,7 +102,8 @@ body {
     cursor: pointer;
   }
   
-  .delete-btn:hover {
-    background-color: #c82333; /* dunkleres Rot beim Hover */
+  #adminTableItemDeleteButton:hover {
+    background-color: #c82333;
   }
+  
   
