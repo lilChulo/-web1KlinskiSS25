@@ -22,18 +22,20 @@
     <button id="ButtonAddUser">User hinzufügen</button>
 
     <!-- Tabelle -->
-    <table id="TableUsers">
+    <table id="TableUsers">  <!-- guck css-->
       <thead>
         <tr>
-          <th>User-ID</th>
+          <th>User-ID</th> <!-- th steht für tabelenüberschrift-->
           <th>First Name</th>
           <th>Last Name</th>
           <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
+        </tr>  <!-- steht für tabellenzeile-->
+      </thead> <!-- bis hier tabelenkopf-->
+
+
+      <tbody> <!-- enthällt inhalt der tabelle-->
         <tr>
-          <td id="adminTableItemUsername">admin</td>
+          <td id="adminTableItemUsername">admin</td>  <!-- td steht für table data, inhalt der spalte-->
           <td id="adminTableItemFirstName">Tagir</td>
           <td id="adminTableItemLastName">Soltanakhmedov</td>
           <td>
@@ -45,12 +47,6 @@
     </table>
   </main>
 
-  <script>
-    document.getElementById("LinkLogout").addEventListener("click", function (event) {
-      event.preventDefault();
-      window.location.href = "../html/landing.html"; 
-    });
-  </script>
 
 </body>
 </html>

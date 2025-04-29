@@ -24,8 +24,10 @@
     <!-- Login-Bereich -->
     <div id="FormLogin">
       <h2>Login</h2>
-      <input type="text" placeholder="Benutzername" id="FormLoginUsername" />
-      <input type="password" placeholder="Passwort" id="FormLoginPassword" />
+      <input type="text" id="FormLoginUsername" placeholder="Benutzername" /> <!-- bereich für username und passwort-->
+
+      <input type="password" id="FormLoginPassword" placeholder="Passwort"/>
+
       <button id="ButtonLoginUser">Login</button>
       <p>Noch kein Account? 
         <a href="#" id="LinkShowSignupDialog" onclick="toggleForms()">Registrieren</a>
@@ -33,10 +35,12 @@
     </div>
 
     <!-- Registrierungs-Bereich -->
-    <div id="FormSignup" style="display: none;">
+    <div id="FormSignup" style="display: none;">  <!-- chatgpt display noen-->
+
       <h2>Registrierung</h2>
-      <input type="text" placeholder="Benutzername" id="FormSignupUsername" />
-      <input type="password" placeholder="Passwort" id="FormSignupPassword" />
+      <input type="text" id="FormSignupUsername" placeholder="Benutzername" />
+      <input type="password" id="FormSignupPassword" placeholder="Passwort" />
+      
       <button id="ButtonSignupUser">Registrieren</button>
       <p>Schon registriert? 
         <a href="#" id="LinkShowLoginDialog" onclick="toggleForms()">Zurück zum Login</a>
@@ -51,9 +55,12 @@
       const login = document.getElementById("FormLogin");
       const register = document.getElementById("FormSignup");
 
-      const isLoginVisible = login.style.display !== "none"; <!-- angucken was das macht -->
-      login.style.display = isLoginVisible ? "none" : "block";
-      register.style.display = isLoginVisible ? "block" : "none";
+      const isLoginVisible = login.style.display !== "none"; // chatgpt
+
+      login.style.display = isLoginVisible ? "none" : "block"; // chatgpt
+      register.style.display = isLoginVisible ? "block" : "none"; // chatgpt
+
+
     }
 
     document.getElementById("ButtonLoginUser").addEventListener("click", function () {
