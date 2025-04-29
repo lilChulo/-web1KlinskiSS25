@@ -80,25 +80,29 @@ body {
     background-color: #eee;
   }
   
-  /* Impressum-Layout */
-.impressum-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 40px;
-  margin-top: 30px;
-}
-
-.block {
-  flex: 1;
-}
-
-.impressum-container h2 {
-  font-size: 1.2em;
-  margin-bottom: 10px;
-}
-
-.impressum-container p {
-  margin: 5px 0;
-  line-height: 1.5;
-}
+  .edit-btn {
+    background-color: #28a745; /* grünes Bootstrap-Grün */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .edit-btn:hover {
+    background-color: #218838; /* dunkleres Grün beim Hover */
+  }
+  
+  .delete-btn {
+    background-color: #dc3545; /* rotes Bootstrap-Rot */
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .delete-btn:hover {
+    background-color: #c82333; /* dunkleres Rot beim Hover */
+  }
+  
