@@ -1,43 +1,32 @@
 <!DOCTYPE html>
-<html lang = "de">
+<html lang="de">
 <head>
-
-<meta charset = "UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<!-- aus stack overflow --> 
-
-<title>Startsseite</title>
-<link rel="stylesheet" href="../css/styles.css"  />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- aus stack overflow --> 
+  <title>Startseite</title>
 
 
+  <link rel="stylesheet" href="../css/styles.css" /> <!-- übernimmt css von style.css-->
 </head>
 <body>
 
+  <nav id="TopMenu">
+    <div class="nav-left"> <!-- sorgt also dafür, dass die Links auf der linken Seite der Navigation angezeigt werden -->
+      <a href="../html/start.html" id="LinkRoot">WE-1 SPA</a>
+      <a href="../html/impressumlog.html" id="LinkImpressum">Impressum</a>
+      <a href="../html/usermanagement.html" id="LinkUserManagement">User-Management</a>
+    </div>
+    <div class="nav-right">
+      <a href="../html/landing.html" id="LinkLogout">Logout</a>
+    </div>
+  </nav>
 
-    <nav>
-        <div class="nav-left">
-          
-            <a href="../html/start.html" id="nav-root">WE-1 SPA</a>
-          <a href="../html/impressum.html" id="nav-impressum">Impressum</a>
-          <a href="../html/usermanagement.html" id="nav-user-management">User-Management</a>
-        
-        </div>
-      
-        <div class="nav-right">
-            
-          <a href="../html/landing.html" id="nav-logout">Logout</a>
-        </div>
-      </nav>
-      
-
-
-<main>
-
-    <h1 id="willkomm-text">Willkomen auf meiner Startseite</h1>
+  <main id="StartPage">
+    <h1 id="StartPageWelcomeText">Willkommen auf meiner Startseite</h1>
     <p>Ort um Daten zu verwalten.</p>
-    <a href="../html/usermanagement.html" id="link-user-management">Zum User-Management</a>
-</main>
+    <a href="../html/usermanagement.html" id="StartPageLinkUserManagement">Zum User-Management</a>
+  </main>
 
-<body>
-    
+</body>
 </html>
