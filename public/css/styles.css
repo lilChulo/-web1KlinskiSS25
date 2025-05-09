@@ -106,4 +106,18 @@ body {
     background-color: #c82333;
   }
   
-  
+  /* Bootstrap-Toast-Anpassungen */
+.toast {
+  min-width: 200px;
+  background-color: #fff;
+}
+
+.bg-success .toast-body {
+  color: #fff;
+  background-color: #28a745;
+}
+
+.bg-danger .toast-body {
+  color: #fff;
+  background-color: #dc3545;
+}
