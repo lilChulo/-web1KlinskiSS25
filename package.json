@@ -4,7 +4,7 @@
   },
   "name": "web1klinskiss25",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "directories": {
     "test": "tests"
   },
@@ -17,7 +17,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "To make it easy for you to get started with GitLab, here's a list of recommended next steps.",
+  "description": "Web 1 übung1",
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/node": "^22.15.12",
