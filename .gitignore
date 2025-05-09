@@ -1,9 +1,6 @@
 # Ignoriere node_modules (für Node.js-Projekte)
 node_modules/
 
-# Ignoriere Build-Ordner (für TypeScript-Projekte)
-dist/
-
 # Ignoriere Log-Dateien
 *.log
 
@@ -13,3 +10,11 @@ dist/
 # Ignoriere IDE-spezifische Dateien (z.B. für Visual Studio Code)
 .vscode/
 .idea/
+
+# Ignoriere systemweite Dateien
+.DS_Store         # macOS
+Thumbs.db         # Windows
+
+# Optional: Ignoriere temporäre Dateien von deinem Texteditor
+*.swp             # Vim
+*.bak             # Backup-Dateien

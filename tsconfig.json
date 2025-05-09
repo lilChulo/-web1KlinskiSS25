@@ -1,15 +1,17 @@
 {
     "compilerOptions": {
-      "outDir": "./dist",
-      "allowJs": true,
-      "sourceMap": true,
-      "target": "es5"
+      "target": "ES2016",
+      "module": "CommonJS",
+      "outDir": "./public/js",       // hierhin soll das JS laut Struktur
+      "rootDir": "./src",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "allowJs": false,
+      "sourceMap": true
+      
     },
-    "include": [
-      "./src/**/*"
-    ],
-    "exclude": [
-      "./dist"
-    ]
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "public"]
   }
-  
