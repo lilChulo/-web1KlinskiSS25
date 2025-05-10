@@ -1,15 +1,13 @@
 import { ApplicationManager } from './ApplicationManager';
-import { LandingPagePom } from './pages/LandingPagePOM';
- export class ApplicationLoader {
-     private appManager: ApplicationManager;
-    private landingPage: LandingPagePom;
 
-     constructor() {
-
-    this.appManager = ApplicationManager.getInstance();
-this.landingPage = new LandingPagePom(this.appManager);
-     }
-         public static start(): void {
-            new ApplicationLoader();
-         }
-         }
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('ApplicationLoader: DOMContentLoaded');
+  try {
+    const appManager = new ApplicationManager();
+    console.log('ApplicationLoader: ApplicationManager instanziert');
+    appManager.start();
+    console.log('ApplicationLoader: ApplicationManager.start aufgerufen');
+  } catch (error) {
+    console.error('ApplicationLoader: Fehler beim Starten', error);
+  }
+});

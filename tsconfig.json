@@ -1,17 +1,16 @@
 {
-    "compilerOptions": {
-      "target": "ES2016",
-      "module": "CommonJS",
-      "outDir": "./public/js",       // hierhin soll das JS laut Struktur
-      "rootDir": "./src",
-      "strict": true,
-      "esModuleInterop": true,
-      "skipLibCheck": true,
-      "forceConsistentCasingInFileNames": true,
-      "allowJs": false,
-      "sourceMap": true
-      
-    },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "public"]
+  "compilerOptions": {
+    "target": "es6",
+    "module": "esnext",
+    "outDir": "./public/js/dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@domain/*": ["src/domain/*"],
+      "@pages/*": ["src/pages/*"]
+    }
   }
+}

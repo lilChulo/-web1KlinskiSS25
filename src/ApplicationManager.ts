@@ -1,65 +1,92 @@
-interface User {
-    id: string;
-    password: string;
-}
-    export class ApplicationManager {
-    private static instance: ApplicationManager;
-    
-    private users: Map<string, string>; // Map<userId, password> 
-    private loggedInUser: string | null;
+import { User } from '@domain/User';
+import { LandingPagePOM } from '@pages/LandingPagePOM';
+import { StartPagePOM } from '@pages/StartPagePOM';
+import { ImpressumPagePOM } from '@pages/ImpressumPagePOM';
 
-    private constructor() {
+export class ApplicationManager {
+  private users: User[] = [];
+  private currentUser: User | null = null;
+  private landingPagePOM: LandingPagePOM;
+  private startPagePOM: StartPagePOM;
+  private impressumPagePOM: ImpressumPagePOM;
 
-    this.users = new Map();
-    this.loggedInUser = null;
+  constructor() {
+    console.log('ApplicationManager: Instanziert');
+    // Standard-User "admin" anlegen
+    this.users.push(new User('admin', '123', 'Manfred', 'Mustermann'));
+    this.landingPagePOM = new LandingPagePOM(this);
+    this.startPagePOM = new StartPagePOM(this);
+    this.impressumPagePOM = new ImpressumPagePOM(this);
+  }
 
-    // Admin-User anlegen
-    this.addUser ("admin", "admin");
+  public start(): void {
+    this.landingPagePOM.showPage();
+  }
+
+  public registerUser(userId: string, password: string, firstName: string, lastName: string): boolean {
+    if (!userId || !password) {
+      this.showToast('User-ID und Passwort dürfen nicht leer sein.', false);
+      return false;
     }
-
-    public static getInstance(): ApplicationManager {
-    if (!ApplicationManager.instance) {
-    ApplicationManager.instance = new ApplicationManager(); 
-}
-
-    return ApplicationManager.instance;
-}
-    public addUser(userId: string, password: string): boolean {
-
-    
-    if (!userId || !password || this.users.has(userId)) {
-        return false;
-}
-this.users.set (userId, password);
-return true;
+    if (this.users.find(u => u.userId === userId)) {
+      this.showToast('User-ID existiert bereits.', false);
+      return false;
     }
+    this.users.push(new User(userId, password, firstName, lastName));
+    this.showToast('Registrierung erfolgreich.', true);
+    return true;
+  }
 
+  public login(userId: string, password: string): boolean {
+    if (!userId || !password) {
+      this.showToast('User-ID und Passwort dürfen nicht leer sein.', false);
+      return false;
+    }
+    const user = this.users.find(u => u.userId === userId && u.password === password);
+    if (user) {
+      this.currentUser = user;
+      this.showToast('Login erfolgreich.', true);
+      this.startPagePOM.showPage();
+      return true;
+    }
+    this.showToast('Login fehlerhaft.', false);
+    return false;
+  }
 
-public login(userId: string, password: string): boolean {
-if (!userId || !password) return false;
-const storedPassword = this.users.get (userId);
+  public logout(): void {
+    this.currentUser = null;
+    this.landingPagePOM.showPage();
+  }
 
-if (storedPassword && storedPassword === password) {
-    this.loggedInUser = userId;
-return true;
-}
-return false;
-}
-public logout(): void {
-this. loggedInUser = null;
-}
+  public showToast(message: string, success: boolean): void {
+    const toast = document.getElementById('toast');
+    if (toast) {
+      toast.textContent = message;
+      toast.className = `toast ${success ? 'success' : 'error'}`;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3000);
+    }
+  }
 
-public isLoggedIn(): boolean {
+  public getCurrentUser(): User | null {
+    return this.currentUser;
+  }
 
+  public getUserCount(): number {
+    return this.users.length;
+  }
 
-return this.loggedInUser !== null;
-}
+  public getLandingPagePOM(): LandingPagePOM {
+    return this.landingPagePOM;
+  }
 
-public getLoggedInUser(): string | null {
-return this.loggedInUser;
-}
+  public getStartPagePOM(): StartPagePOM {
+    return this.startPagePOM;
+  }
 
-public getAllUsers(): User[] {
-return Array.from(this.users.entries()).map(([id, password]) => ({ id, password }));
-}
+  public getImpressumPagePOM(): ImpressumPagePOM {
+    return this.impressumPagePOM;
+  }
 }

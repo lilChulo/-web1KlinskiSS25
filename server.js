@@ -1,16 +1,19 @@
-const path = require('path');
 const express = require('express');
+const path = require('path');
 const app = express();
 const port = 80;
 
-// Root-Route: Landing Page zuerst definieren
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'html', 'landing.html'));
+// MIME-Typ für CSS erzwingen
+app.use((req, res, next) => {
+  if (req.url.endsWith('.css')) {
+    res.setHeader('Content-Type', 'text/css');
+  }
+  next();
 });
 
-// Danach statische Dateien
+// Statische Dateien aus public/ ausliefern
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(port, () => {
-  console.log(`Server läuft auf http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });
