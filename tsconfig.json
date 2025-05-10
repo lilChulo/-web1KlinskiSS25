@@ -1,15 +1,16 @@
 {
-    "compilerOptions": {
-      "outDir": "./dist",
-      "allowJs": true,
-      "sourceMap": true,
-      "target": "es5"
-    },
-    "include": [
-      "./src/**/*"
-    ],
-    "exclude": [
-      "./dist"
-    ]
+  "compilerOptions": {
+    "target": "es6",
+    "module": "esnext",
+    "outDir": "./public/js/dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@domain/*": ["src/domain/*"],
+      "@pages/*": ["src/pages/*"]
+    }
   }
-  
+}
