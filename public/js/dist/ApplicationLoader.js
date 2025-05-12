@@ -1,4 +1,5 @@
-import { ApplicationManager } from './ApplicationManager';
+import { ApplicationManager } from './ApplicationManager.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('ApplicationLoader: DOMContentLoaded');
     try {

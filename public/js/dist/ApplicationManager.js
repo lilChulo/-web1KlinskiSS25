@@ -1,7 +1,7 @@
-import { User } from '../domain/User';
-import { LandingPagePOM } from '../pages/LandingPagePOM';
-import { StartPagePOM } from '../pages/StartPagePOM';
-import { ImpressumPagePOM } from '../pages/ImpressumPagePOM';
+import { User } from './domain/User.js';
+import { LandingPagePOM } from './pages/LandingPagePOM.js';
+import { StartPagePOM } from './pages/StartPagePOM.js';
+import { ImpressumPagePOM } from './pages/ImpressumPagePOM.js';
 
 export class ApplicationManager {
     constructor() {

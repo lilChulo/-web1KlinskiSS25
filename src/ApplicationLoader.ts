@@ -3,6 +3,7 @@ import { ApplicationManager } from './ApplicationManager';
 document.addEventListener('DOMContentLoaded', () => {
   console.log('ApplicationLoader: DOMContentLoaded');
   try {
+    
     const appManager = new ApplicationManager();
     console.log('ApplicationLoader: ApplicationManager instanziert');
     appManager.start();
