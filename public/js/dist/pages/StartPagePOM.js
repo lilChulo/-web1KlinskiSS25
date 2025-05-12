@@ -45,28 +45,27 @@ export class StartPagePOM extends AbstractPOM {
         (_a = document.getElementById('LinkRoot')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('StartPagePOM: LinkRoot geklickt');
-            this.appManager.getStartPagePOM().showPage();
+            this.appManager.showStartPage();
         });
         (_b = document.getElementById('LinkImpressum')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('StartPagePOM: LinkImpressum geklickt');
-            this.appManager.getImpressumPagePOM().showPage();
+            this.appManager.showImpressumPage();
         });
         (_c = document.getElementById('LinkLogout')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('StartPagePOM: LinkLogout geklickt');
             this.appManager.logout();
         });
-        // Platzhalter für User-Management (wird im nächsten Meilenstein implementiert)
         (_d = document.getElementById('LinkUserManagement')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('StartPagePOM: LinkUserManagement geklickt');
-            this.appManager.showToast('User-Management wird im nächsten Meilenstein implementiert.', false);
+            this.appManager.showUserManagementPage();
         });
         (_e = document.getElementById('StartPageLinkUserManagement')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('StartPagePOM: StartPageLinkUserManagement geklickt');
-            this.appManager.showToast('User-Management wird im nächsten Meilenstein implementiert.', false);
+            this.appManager.showUserManagementPage();
         });
     }
 }

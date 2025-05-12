@@ -2,6 +2,7 @@ import { User } from '@domain/User';
 import { LandingPagePOM } from '@pages/LandingPagePOM';
 import { StartPagePOM } from '@pages/StartPagePOM';
 import { ImpressumPagePOM } from '@pages/ImpressumPagePOM';
+import { UserManagementPOM } from '@pages/UserManagementPOM';
 
 export class ApplicationManager {
   private users: User[] = [];
@@ -9,14 +10,15 @@ export class ApplicationManager {
   private landingPagePOM: LandingPagePOM;
   private startPagePOM: StartPagePOM;
   private impressumPagePOM: ImpressumPagePOM;
+  private userManagementPOM: UserManagementPOM;
 
   constructor() {
     console.log('ApplicationManager: Instanziert');
-    // Standard-User "admin" anlegen
     this.users.push(new User('admin', '123', 'Manfred', 'Mustermann'));
     this.landingPagePOM = new LandingPagePOM(this);
     this.startPagePOM = new StartPagePOM(this);
     this.impressumPagePOM = new ImpressumPagePOM(this);
+    this.userManagementPOM = new UserManagementPOM(this);
   }
 
   public start(): void {
@@ -56,6 +58,7 @@ export class ApplicationManager {
   public logout(): void {
     this.currentUser = null;
     this.landingPagePOM.showPage();
+    this.showToast('Logout erfolgreich.', true);
   }
 
   public showToast(message: string, success: boolean): void {
@@ -88,5 +91,25 @@ export class ApplicationManager {
 
   public getImpressumPagePOM(): ImpressumPagePOM {
     return this.impressumPagePOM;
+  }
+
+  public getUserManagementPOM(): UserManagementPOM {
+    return this.userManagementPOM;
+  }
+
+  public showLandingPage(): void {
+    this.landingPagePOM.showPage();
+  }
+
+  public showStartPage(): void {
+    this.startPagePOM.showPage();
+  }
+
+  public showImpressumPage(): void {
+    this.impressumPagePOM.showPage();
+  }
+
+  public showUserManagementPage(): void {
+    this.userManagementPOM.showPage();
   }
 }

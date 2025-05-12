@@ -48,13 +48,13 @@ export class StartPagePOM extends AbstractPOM {
     document.getElementById('LinkRoot')?.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('StartPagePOM: LinkRoot geklickt');
-      this.appManager.getStartPagePOM().showPage();
+      this.appManager.showStartPage();
     });
 
     document.getElementById('LinkImpressum')?.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('StartPagePOM: LinkImpressum geklickt');
-      this.appManager.getImpressumPagePOM().showPage();
+      this.appManager.showImpressumPage();
     });
 
     document.getElementById('LinkLogout')?.addEventListener('click', (e) => {
@@ -63,17 +63,16 @@ export class StartPagePOM extends AbstractPOM {
       this.appManager.logout();
     });
 
-    // Platzhalter für User-Management (wird im nächsten Meilenstein implementiert)
     document.getElementById('LinkUserManagement')?.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('StartPagePOM: LinkUserManagement geklickt');
-      this.appManager.showToast('User-Management wird im nächsten Meilenstein implementiert.', false);
+      this.appManager.showUserManagementPage();
     });
 
     document.getElementById('StartPageLinkUserManagement')?.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('StartPagePOM: StartPageLinkUserManagement geklickt');
-      this.appManager.showToast('User-Management wird im nächsten Meilenstein implementiert.', false);
+      this.appManager.showUserManagementPage();
     });
   }
 }
