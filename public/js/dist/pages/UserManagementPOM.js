@@ -109,7 +109,7 @@ export class UserManagementPOM extends AbstractPOM {
         }
     }
     attachEventListeners() {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+        var _a, _b, _c, _d, _e;
         (_a = document.getElementById('LinkRoot')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('UserManagementPOM: LinkRoot geklickt');
@@ -133,46 +133,6 @@ export class UserManagementPOM extends AbstractPOM {
         (_e = document.getElementById('backButton')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', () => {
             console.log('UserManagementPOM: backButton geklickt');
             this.appManager.showStartPage();
-        });
-        // Platzhalter für Add-Dialog
-        (_f = document.getElementById('ButtonAddUser')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', () => {
-            const addForm = document.getElementById('FormAddUser');
-            if (addForm) {
-                addForm.style.display = 'block';
-            }
-        });
-        (_g = document.getElementById('FormAddUserSubmit')) === null || _g === void 0 ? void 0 : _g.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log('UserManagementPOM: FormAddUserSubmit geklickt (Platzhalter)');
-            // Platzhalter für spätere Implementierung
-        });
-        (_h = document.getElementById('FormAddUserCancel')) === null || _h === void 0 ? void 0 : _h.addEventListener('click', () => {
-            const addForm = document.getElementById('FormAddUser');
-            if (addForm) {
-                addForm.style.display = 'none';
-            }
-        });
-        // Platzhalter für Edit-Dialog
-        (_j = document.getElementById('adminTableItemEditButton')) === null || _j === void 0 ? void 0 : _j.addEventListener('click', () => {
-            const editForm = document.getElementById('FormEditUser');
-            if (editForm) {
-                editForm.style.display = 'block';
-            }
-        });
-        (_k = document.getElementById('FormEditUserSubmit')) === null || _k === void 0 ? void 0 : _k.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log('UserManagementPOM: FormEditUserSubmit geklickt (Platzhalter)');
-            // Platzhalter für spätere Implementierung
-        });
-        (_l = document.getElementById('FormEditUserCancel')) === null || _l === void 0 ? void 0 : _l.addEventListener('click', () => {
-            const editForm = document.getElementById('FormEditUser');
-            if (editForm) {
-                editForm.style.display = 'none';
-            }
-        });
-        (_m = document.getElementById('adminTableItemDeleteButton')) === null || _m === void 0 ? void 0 : _m.addEventListener('click', () => {
-            console.log('UserManagementPOM: adminTableItemDeleteButton geklickt (Platzhalter)');
-            // Platzhalter für spätere Implementierung
         });
     }
 }

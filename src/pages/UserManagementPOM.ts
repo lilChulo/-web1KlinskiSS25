@@ -141,52 +141,5 @@ export class UserManagementPOM extends AbstractPOM {
       console.log('UserManagementPOM: backButton geklickt');
       this.appManager.showStartPage();
     });
-
-    // Platzhalter für Add-Dialog
-    document.getElementById('ButtonAddUser')?.addEventListener('click', () => {
-      const addForm = document.getElementById('FormAddUser');
-      if (addForm) {
-        addForm.style.display = 'block';
-      }
-    });
-
-    document.getElementById('FormAddUserSubmit')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      console.log('UserManagementPOM: FormAddUserSubmit geklickt (Platzhalter)');
-      // Platzhalter für spätere Implementierung
-    });
-
-    document.getElementById('FormAddUserCancel')?.addEventListener('click', () => {
-      const addForm = document.getElementById('FormAddUser');
-      if (addForm) {
-        addForm.style.display = 'none';
-      }
-    });
-
-    // Platzhalter für Edit-Dialog
-    document.getElementById('adminTableItemEditButton')?.addEventListener('click', () => {
-      const editForm = document.getElementById('FormEditUser');
-      if (editForm) {
-        editForm.style.display = 'block';
-      }
-    });
-
-    document.getElementById('FormEditUserSubmit')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      console.log('UserManagementPOM: FormEditUserSubmit geklickt (Platzhalter)');
-      // Platzhalter für spätere Implementierung
-    });
-
-    document.getElementById('FormEditUserCancel')?.addEventListener('click', () => {
-      const editForm = document.getElementById('FormEditUser');
-      if (editForm) {
-        editForm.style.display = 'none';
-      }
-    });
-
-    document.getElementById('adminTableItemDeleteButton')?.addEventListener('click', () => {
-      console.log('UserManagementPOM: adminTableItemDeleteButton geklickt (Platzhalter)');
-      // Platzhalter für spätere Implementierung
-    });
   }
 }
