@@ -11,7 +11,7 @@ export class ImpressumPagePOM extends AbstractPOM {
         if (app && topMenu) {
             app.innerHTML = `
         <div id="ImpressumPage">
-          <h1>Impressum</h2>
+          <h1>Impressum</h1>
           <h3>Anbieter</h3>
           <p>Max Mustermann<br>
              Musterstraße 123<br>
@@ -20,7 +20,8 @@ export class ImpressumPagePOM extends AbstractPOM {
           <p>Telefon: +49 123 456789<br>
              E-Mail: info@example.com<br>
           <h3>Haftungsausschluss</h3>
-          <p>Haftung für Inhalte: Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt, Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewehr übernehmen. ... <br>Haftung für Links: Unsere Angebot enthält Links zu extremen Webseiten Dritter, auf deren Inhalt wir keinen Einfluss haben ...</p>
+          <p>Haftung für Inhalte: Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt, Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewehr übernehmen.<br>
+          Haftung für Links: Unsere Angebot enthält Links zu extremen Webseiten Dritter, auf deren Inhalt wir keinen Einfluss haben ...</p>
           
         </div>
       `;

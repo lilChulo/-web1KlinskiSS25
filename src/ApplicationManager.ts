@@ -63,14 +63,16 @@ export class ApplicationManager {
 
   public showToast(message: string, success: boolean): void {
     const toast = document.getElementById('toast');
-    if (toast) {
-      toast.textContent = message;
-      toast.className = `toast ${success ? 'success' : 'error'}`;
-      toast.style.display = 'block';
-      setTimeout(() => {
-        toast.style.display = 'none';
-      }, 3000);
+    if (!toast) {
+      console.error('ApplicationManager: Toast-Element nicht gefunden');
+      return;
     }
+    toast.textContent = message;
+    toast.className = `toast ${success ? 'success' : 'error'}`;
+    toast.style.display = 'block';
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 3000);
   }
 
   public getCurrentUser(): User | null {

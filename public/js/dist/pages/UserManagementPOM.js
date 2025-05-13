@@ -12,8 +12,8 @@ export class UserManagementPOM extends AbstractPOM {
             app.innerHTML = `
         <div id="UserManagementPage">
           <h1>User Administration</h1>
-          <button class="add-button">+</button>
-          <table>
+          <button id="ButtonAddUser" class="add-button">+</button>
+          <table id="TableUsers">
             <thead>
               <tr>
                 <th>User-ID</th>
@@ -24,16 +24,62 @@ export class UserManagementPOM extends AbstractPOM {
             </thead>
             <tbody>
               <tr>
-                <td>admin</td>
-                <td>Udo</td>
-                <td>Müller</td>
+                <td id="adminTableItemUsername">admin</td>
+                <td id="adminTableItemFirstName">Udo</td>
+                <td id="adminTableItemLastName">Müller</td>
                 <td>
-                  <button class="edit-button">Edit</button>
-                  <button class="delete-button">Delete</button>
+                  <button id="adminTableItemEditButton" class="edit-button">Edit</button>
+                  <button id="adminTableItemDeleteButton" class="delete-button">Delete</button>
                 </td>
               </tr>
             </tbody>
           </table>
+          <div id="FormAddUser" style="display: none;">
+            <h3>User hinzufügen</h3>
+            <form>
+              <div class="form-group">
+                <label for="FormAddUserUsername">User-ID:</label>
+                <input type="text" id="FormAddUserUsername" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="FormAddUserPassword">Passwort:</label>
+                <input type="password" id="FormAddUserPassword" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="FormAddUserFirstName">Vorname:</label>
+                <input type="text" id="FormAddUserFirstName" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="FormAddUserLastName">Nachname:</label>
+                <input type="text" id="FormAddUserLastName" class="form-control">
+              </div>
+              <button type="submit" id="FormAddUserSubmit" class="btn btn-primary">Hinzufügen</button>
+              <button type="button" id="FormAddUserCancel" class="btn btn-secondary">Abbrechen</button>
+            </form>
+          </div>
+          <div id="FormEditUser" style="display: none;">
+            <h3>User bearbeiten</h3>
+            <form>
+              <div class="form-group">
+                <label for="FormEditUserUsername">User-ID:</label>
+                <input type="text" id="FormEditUserUsername" class="form-control" readonly>
+              </div>
+              <div class="form-group">
+                <label for="FormEditUserPassword">Passwort:</label>
+                <input type="password" id="FormEditUserPassword" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="FormEditUserFirstName">Vorname:</label>
+                <input type="text" id="FormEditUserFirstName" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="FormEditUserLastName">Nachname:</label>
+                <input type="text" id="FormEditUserLastName" class="form-control">
+              </div>
+              <button type="submit" id="FormEditUserSubmit" class="btn btn-primary">Speichern</button>
+              <button type="button" id="FormEditUserCancel" class="btn btn-secondary">Abbrechen</button>
+            </form>
+          </div>
           <button id="backButton" class="btn btn-secondary mt-2">Zurück</button>
         </div>
       `;
@@ -63,7 +109,7 @@ export class UserManagementPOM extends AbstractPOM {
         }
     }
     attachEventListeners() {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
         (_a = document.getElementById('LinkRoot')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('UserManagementPOM: LinkRoot geklickt');
@@ -87,6 +133,46 @@ export class UserManagementPOM extends AbstractPOM {
         (_e = document.getElementById('backButton')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', () => {
             console.log('UserManagementPOM: backButton geklickt');
             this.appManager.showStartPage();
+        });
+        // Platzhalter für Add-Dialog
+        (_f = document.getElementById('ButtonAddUser')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', () => {
+            const addForm = document.getElementById('FormAddUser');
+            if (addForm) {
+                addForm.style.display = 'block';
+            }
+        });
+        (_g = document.getElementById('FormAddUserSubmit')) === null || _g === void 0 ? void 0 : _g.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('UserManagementPOM: FormAddUserSubmit geklickt (Platzhalter)');
+            // Platzhalter für spätere Implementierung
+        });
+        (_h = document.getElementById('FormAddUserCancel')) === null || _h === void 0 ? void 0 : _h.addEventListener('click', () => {
+            const addForm = document.getElementById('FormAddUser');
+            if (addForm) {
+                addForm.style.display = 'none';
+            }
+        });
+        // Platzhalter für Edit-Dialog
+        (_j = document.getElementById('adminTableItemEditButton')) === null || _j === void 0 ? void 0 : _j.addEventListener('click', () => {
+            const editForm = document.getElementById('FormEditUser');
+            if (editForm) {
+                editForm.style.display = 'block';
+            }
+        });
+        (_k = document.getElementById('FormEditUserSubmit')) === null || _k === void 0 ? void 0 : _k.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('UserManagementPOM: FormEditUserSubmit geklickt (Platzhalter)');
+            // Platzhalter für spätere Implementierung
+        });
+        (_l = document.getElementById('FormEditUserCancel')) === null || _l === void 0 ? void 0 : _l.addEventListener('click', () => {
+            const editForm = document.getElementById('FormEditUser');
+            if (editForm) {
+                editForm.style.display = 'none';
+            }
+        });
+        (_m = document.getElementById('adminTableItemDeleteButton')) === null || _m === void 0 ? void 0 : _m.addEventListener('click', () => {
+            console.log('UserManagementPOM: adminTableItemDeleteButton geklickt (Platzhalter)');
+            // Platzhalter für spätere Implementierung
         });
     }
 }

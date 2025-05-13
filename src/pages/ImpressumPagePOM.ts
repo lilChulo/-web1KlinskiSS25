@@ -14,7 +14,7 @@ export class ImpressumPagePOM extends AbstractPOM {
     if (app && topMenu) {
       app.innerHTML = `
         <div id="ImpressumPage">
-          <h1>Impressum</h2>
+          <h1>Impressum</h1>
           <h3>Anbieter</h3>
           <p>Max Mustermann<br>
              Musterstraße 123<br>

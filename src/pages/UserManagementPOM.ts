@@ -15,8 +15,8 @@ export class UserManagementPOM extends AbstractPOM {
       app.innerHTML = `
         <div id="UserManagementPage">
           <h1>User Administration</h1>
-          <button class="add-button">+</button>
-          <table>
+          <button id="ButtonAddUser" class="add-button">+</button>
+          <table id="TableUsers">
             <thead>
               <tr>
                 <th>User-ID</th>
@@ -27,16 +27,62 @@ export class UserManagementPOM extends AbstractPOM {
             </thead>
             <tbody>
               <tr>
-                <td>admin</td>
-                <td>Udo</td>
-                <td>Müller</td>
+                <td id="adminTableItemUsername">admin</td>
+                <td id="adminTableItemFirstName">Udo</td>
+                <td id="adminTableItemLastName">Müller</td>
                 <td>
-                  <button class="edit-button">Edit</button>
-                  <button class="delete-button">Delete</button>
+                  <button id="adminTableItemEditButton" class="edit-button">Edit</button>
+                  <button id="adminTableItemDeleteButton" class="delete-button">Delete</button>
                 </td>
               </tr>
             </tbody>
           </table>
+          <div id="FormAddUser" style="display: none;">
+            <h3>User hinzufügen</h3>
+            <form>
+              <div class="form-group">
+                <label for="FormAddUserUsername">User-ID:</label>
+                <input type="text" id="FormAddUserUsername" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="FormAddUserPassword">Passwort:</label>
+                <input type="password" id="FormAddUserPassword" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="FormAddUserFirstName">Vorname:</label>
+                <input type="text" id="FormAddUserFirstName" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="FormAddUserLastName">Nachname:</label>
+                <input type="text" id="FormAddUserLastName" class="form-control">
+              </div>
+              <button type="submit" id="FormAddUserSubmit" class="btn btn-primary">Hinzufügen</button>
+              <button type="button" id="FormAddUserCancel" class="btn btn-secondary">Abbrechen</button>
+            </form>
+          </div>
+          <div id="FormEditUser" style="display: none;">
+            <h3>User bearbeiten</h3>
+            <form>
+              <div class="form-group">
+                <label for="FormEditUserUsername">User-ID:</label>
+                <input type="text" id="FormEditUserUsername" class="form-control" readonly>
+              </div>
+              <div class="form-group">
+                <label for="FormEditUserPassword">Passwort:</label>
+                <input type="password" id="FormEditUserPassword" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="FormEditUserFirstName">Vorname:</label>
+                <input type="text" id="FormEditUserFirstName" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="FormEditUserLastName">Nachname:</label>
+                <input type="text" id="FormEditUserLastName" class="form-control">
+              </div>
+              <button type="submit" id="FormEditUserSubmit" class="btn btn-primary">Speichern</button>
+              <button type="button" id="FormEditUserCancel" class="btn btn-secondary">Abbrechen</button>
+            </form>
+          </div>
           <button id="backButton" class="btn btn-secondary mt-2">Zurück</button>
         </div>
       `;
@@ -94,6 +140,53 @@ export class UserManagementPOM extends AbstractPOM {
     document.getElementById('backButton')?.addEventListener('click', () => {
       console.log('UserManagementPOM: backButton geklickt');
       this.appManager.showStartPage();
+    });
+
+    // Platzhalter für Add-Dialog
+    document.getElementById('ButtonAddUser')?.addEventListener('click', () => {
+      const addForm = document.getElementById('FormAddUser');
+      if (addForm) {
+        addForm.style.display = 'block';
+      }
+    });
+
+    document.getElementById('FormAddUserSubmit')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('UserManagementPOM: FormAddUserSubmit geklickt (Platzhalter)');
+      // Platzhalter für spätere Implementierung
+    });
+
+    document.getElementById('FormAddUserCancel')?.addEventListener('click', () => {
+      const addForm = document.getElementById('FormAddUser');
+      if (addForm) {
+        addForm.style.display = 'none';
+      }
+    });
+
+    // Platzhalter für Edit-Dialog
+    document.getElementById('adminTableItemEditButton')?.addEventListener('click', () => {
+      const editForm = document.getElementById('FormEditUser');
+      if (editForm) {
+        editForm.style.display = 'block';
+      }
+    });
+
+    document.getElementById('FormEditUserSubmit')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('UserManagementPOM: FormEditUserSubmit geklickt (Platzhalter)');
+      // Platzhalter für spätere Implementierung
+    });
+
+    document.getElementById('FormEditUserCancel')?.addEventListener('click', () => {
+      const editForm = document.getElementById('FormEditUser');
+      if (editForm) {
+        editForm.style.display = 'none';
+      }
+    });
+
+    document.getElementById('adminTableItemDeleteButton')?.addEventListener('click', () => {
+      console.log('UserManagementPOM: adminTableItemDeleteButton geklickt (Platzhalter)');
+      // Platzhalter für spätere Implementierung
     });
   }
 }

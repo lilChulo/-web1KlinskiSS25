@@ -11,8 +11,12 @@ export class StartPagePOM extends AbstractPOM {
         if (app && topMenu) {
             app.innerHTML = `
         <div id="StartPage">
-          <h2 id="StartPageWelcomeText">Willkommen, <span id="UserCount">${this.appManager.getUserCount()}</span> User sind registriert!</h2>
-          <a href="#" id="StartPageLinkUserManagement" class="btn btn-link">Zum User Management</a>
+        <h1>Startseite</h1>
+          <h2 id="StartPageWelcomeText">Willkommen, das ist der Anfang deiner Seite, wenn alles erfolgreich war solltest du mehr als 0 User sehen.<br> <span id="UserCount">${this.appManager.getUserCount()}</span> User sind registriert!</h2>
+<p>
+  Möchtest du die User-Daten bearbeiten?
+  <a href="#" id="StartPageLinkUserManagement" class="btn btn-link">Zum User Management</a>
+</p>
         </div>
       `;
             topMenu.innerHTML = `

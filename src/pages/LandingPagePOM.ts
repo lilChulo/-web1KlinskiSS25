@@ -119,13 +119,13 @@ export class LandingPagePOM extends AbstractPOM {
     document.getElementById('LinkRoot')?.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('LandingPagePOM: LinkRoot geklickt');
-      this.appManager.getLandingPagePOM().showPage();
+      this.appManager.showLandingPage();
     });
 
     document.getElementById('LinkImpressum')?.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('LandingPagePOM: LinkImpressum geklickt');
-      this.appManager.getImpressumPagePOM().showPage();
+      this.appManager.showImpressumPage();
     });
   }
 }

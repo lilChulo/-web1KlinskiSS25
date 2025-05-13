@@ -112,12 +112,12 @@ export class LandingPagePOM extends AbstractPOM {
         (_e = document.getElementById('LinkRoot')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('LandingPagePOM: LinkRoot geklickt');
-            this.appManager.getLandingPagePOM().showPage();
+            this.appManager.showLandingPage();
         });
         (_f = document.getElementById('LinkImpressum')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('LandingPagePOM: LinkImpressum geklickt');
-            this.appManager.getImpressumPagePOM().showPage();
+            this.appManager.showImpressumPage();
         });
     }
 }
