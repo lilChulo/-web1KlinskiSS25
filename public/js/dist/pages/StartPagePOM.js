@@ -2,29 +2,43 @@ import { AbstractPOM } from './AbstractPOM.js';
 export class StartPagePOM extends AbstractPOM {
     constructor(appManager) {
         super(appManager);
-        console.log('StartPagePOM: Instanziert');
+        console.log('StartPagePOM: Instanziert'); // Konstruktor wie immer
     }
     showPage() {
         console.log('StartPagePOM: showPage aufgerufen');
         const app = document.getElementById('app');
         const topMenu = document.getElementById('TopMenu');
+        // wenn beide Elemente da sind -> Inhalt rein
         if (app && topMenu) {
             app.innerHTML = `
         <div id="StartPage">
+
         <h1>Startseite</h1>
-          <h2 id="StartPageWelcomeText">Willkommen, das ist der Anfang deiner Seite, wenn alles erfolgreich war solltest du mehr als 0 User sehen.<br> <span id="UserCount">${this.appManager.getUserCount()}</span> User sind registriert!</h2>
-<p>
-  Möchtest du die User-Daten bearbeiten?
-  <a href="#" id="StartPageLinkUserManagement" class="btn btn-link">Zum User Management</a>
-</p>
+
+        <h2 id="StartPageWelcomeText">
+          Willkommen, das ist der Anfang deiner Seite, wenn alles erfolgreich war solltest du mehr als 0 User sehen.<br>
+          <span id="UserCount">${this.appManager.getUserCount()}</span> User sind registriert!
+        </h2>
+
+        <p>
+          Möchtest du die User-Daten bearbeiten?
+          <a href="#" id="StartPageLinkUserManagement" class="btn btn-link">Zum User Management</a>
+        </p>
+
         </div>
       `;
+            // Menü oben setzen
             topMenu.innerHTML = `
         <div class="container-fluid">
+
           <a class="navbar-brand" href="#" id="LinkRoot">WE-1 SPA</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
+
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
@@ -38,34 +52,40 @@ export class StartPagePOM extends AbstractPOM {
               </li>
             </ul>
           </div>
+
         </div>
       `;
-            this.attachEventListeners();
+            this.attachEventListeners(); // ganz wichtig sonst passiert nix
             console.log('StartPagePOM: HTML eingefügt und Event-Listener angehängt');
         }
     }
     attachEventListeners() {
         var _a, _b, _c, _d, _e;
+        // Link oben: zurück zur Startseite
         (_a = document.getElementById('LinkRoot')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('StartPagePOM: LinkRoot geklickt');
             this.appManager.showStartPage();
         });
+        // Link oben: Impressum anzeigen
         (_b = document.getElementById('LinkImpressum')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('StartPagePOM: LinkImpressum geklickt');
             this.appManager.showImpressumPage();
         });
+        // Logout (oben im Menü)
         (_c = document.getElementById('LinkLogout')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('StartPagePOM: LinkLogout geklickt');
-            this.appManager.logout();
+            this.appManager.logout(); // abmelden, zurück zur LandingPage?
         });
+        // Link oben: User Management
         (_d = document.getElementById('LinkUserManagement')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('StartPagePOM: LinkUserManagement geklickt');
             this.appManager.showUserManagementPage();
         });
+        // Link im Textkörper: User Management
         (_e = document.getElementById('StartPageLinkUserManagement')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('StartPagePOM: StartPageLinkUserManagement geklickt');

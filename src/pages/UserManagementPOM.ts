@@ -1,21 +1,34 @@
+//Struktur von html mit html verschönert sonst nicht viel
+//sinn aus userM.html geklaut
+
+
 import { AbstractPOM } from './AbstractPOM';
+
 import { ApplicationManager } from '../ApplicationManager';
 
 export class UserManagementPOM extends AbstractPOM {
   constructor(appManager: ApplicationManager) {
     super(appManager);
-    console.log('UserManagementPOM: Instanziert');
+    console.log('UserManagementPOM: Instanziert'); // Konstruktor aufgerufen
   }
 
-  public showPage(): void {
+  public showPage(): void 
+  {
     console.log('UserManagementPOM: showPage aufgerufen');
+
     const app = document.getElementById('app');
     const topMenu = document.getElementById('TopMenu');
-    if (app && topMenu) {
+
+    // Überprüfen, ob die DOM-Elemente vorhanden sind
+    if (app && topMenu) 
+      {
+      // HTML für die User Management-Seite
       app.innerHTML = `
         <div id="UserManagementPage">
           <h1>User Administration</h1>
           <button id="ButtonAddUser" class="add-button">+</button>
+          
+          <!-- Tabelle der Benutzer -->
           <table id="TableUsers">
             <thead>
               <tr>
@@ -37,6 +50,8 @@ export class UserManagementPOM extends AbstractPOM {
               </tr>
             </tbody>
           </table>
+
+          <!-- Formular für neuen Benutzer -->
           <div id="FormAddUser" style="display: none;">
             <h3>User hinzufügen</h3>
             <form>
@@ -60,6 +75,8 @@ export class UserManagementPOM extends AbstractPOM {
               <button type="button" id="FormAddUserCancel" class="btn btn-secondary">Abbrechen</button>
             </form>
           </div>
+
+          <!-- Formular für die Bearbeitung eines gelogten Users -->
           <div id="FormEditUser" style="display: none;">
             <h3>User bearbeiten</h3>
             <form>
@@ -83,13 +100,17 @@ export class UserManagementPOM extends AbstractPOM {
               <button type="button" id="FormEditUserCancel" class="btn btn-secondary">Abbrechen</button>
             </form>
           </div>
+
           <button id="backButton" class="btn btn-secondary mt-2">Zurück</button>
         </div>
       `;
+
+      // Top-Navigation
       topMenu.innerHTML = `
         <div class="container-fluid">
           <a class="navbar-brand" href="#" id="LinkRoot">WE-1 SPA</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
@@ -107,39 +128,52 @@ export class UserManagementPOM extends AbstractPOM {
           </div>
         </div>
       `;
-      this.attachEventListeners();
+
+      this.attachEventListeners(); // Event-Listener hinzufügen
       console.log('UserManagementPOM: HTML eingefügt und Event-Listener angehängt');
     }
   }
 
   private attachEventListeners(): void {
+    // Link zur Startseite
     document.getElementById('LinkRoot')?.addEventListener('click', (e) => {
-      e.preventDefault();
+e.preventDefault();
+
       console.log('UserManagementPOM: LinkRoot geklickt');
       this.appManager.showStartPage();
-    });
 
-    document.getElementById('LinkImpressum')?.addEventListener('click', (e) => {
-      e.preventDefault();
+    }
+  );
+
+    // Link zum Impressum
+    document.getElementById('LinkImpressum')?.addEventListener('click', (e) => { e.preventDefault();
       console.log('UserManagementPOM: LinkImpressum geklickt');
       this.appManager.showImpressumPage();
-    });
+    }
+  );
 
+    // Link zu User Management
     document.getElementById('LinkUserManagement')?.addEventListener('click', (e) => {
-      e.preventDefault();
+    e.preventDefault();
+
       console.log('UserManagementPOM: LinkUserManagement geklickt');
       this.appManager.showUserManagementPage();
     });
 
+    // Link zum Logout
     document.getElementById('LinkLogout')?.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('UserManagementPOM: LinkLogout geklickt');
       this.appManager.logout();
+
+
     });
 
+    // Zurück Button
     document.getElementById('backButton')?.addEventListener('click', () => {
       console.log('UserManagementPOM: backButton geklickt');
       this.appManager.showStartPage();
+      
     });
   }
 }
