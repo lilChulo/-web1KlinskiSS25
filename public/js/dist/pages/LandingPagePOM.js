@@ -105,8 +105,7 @@ export class LandingPagePOM extends AbstractPOM {
                 document.getElementById('FormSignupPassword').value = '';
                 document.getElementById('FormSignupFirstName').value = '';
                 document.getElementById('FormSignupLastName').value = '';
-                document.getElementById('FormSignup').style.display = 'none';
-                document.getElementById('FormLogin').style.display = 'block';
+                
             }
         });
         (_e = document.getElementById('LinkRoot')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', (e) => {
