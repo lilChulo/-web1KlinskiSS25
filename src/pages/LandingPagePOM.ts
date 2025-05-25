@@ -165,8 +165,12 @@ export class LandingPagePOM extends AbstractPOM {
 
 
       console.log('LandingPagePOM: LinkRoot geklickt');
-      this.appManager.showLandingPage(); // zeigt aktuelle Seite nochmal?
-    });
+if (this.appManager.getCurrentUser()) {
+        this.appManager.showStartPage();
+      } else {
+        this.appManager.showLandingPage();
+      }
+        });
 
     // Link oben  im Menü Impressum
     document.getElementById('LinkImpressum')?.addEventListener('click', (e) => {     e.preventDefault();

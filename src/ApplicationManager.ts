@@ -110,6 +110,10 @@ export class ApplicationManager {
     return this.users.length;
   }
 
+  public getUsers(): User[] {
+    return this.users;
+  }
+
   
   // Getter für LandingPage POM
   public getLandingPagePOM(): LandingPagePOM {

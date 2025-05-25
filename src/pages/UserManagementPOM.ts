@@ -1,34 +1,41 @@
-//Struktur von html mit html verschönert sonst nicht viel
-//sinn aus userM.html geklaut
-
-
+// UserManagementPOM.ts
 import { AbstractPOM } from './AbstractPOM';
-
 import { ApplicationManager } from '../ApplicationManager';
+import { User } from '@domain/User';
 
 export class UserManagementPOM extends AbstractPOM {
   constructor(appManager: ApplicationManager) {
     super(appManager);
-    console.log('UserManagementPOM: Instanziert'); // Konstruktor aufgerufen
+    console.log('UserManagementPOM: Instanziert');
   }
 
-  public showPage(): void 
-  {
+  public showPage(): void {
     console.log('UserManagementPOM: showPage aufgerufen');
 
     const app = document.getElementById('app');
     const topMenu = document.getElementById('TopMenu');
 
-    // Überprüfen, ob die DOM-Elemente vorhanden sind
-    if (app && topMenu) 
-      {
-      // HTML für die User Management-Seite
+    if (app && topMenu) {
+      const users: User[] = (this.appManager as any).getUsers();
+
+      let tableRows = '';
+      users.forEach(user => {
+        tableRows += `
+          <tr>
+            <td id="${user.userId}TableItemUsername">${user.userId}</td>
+            <td id="${user.userId}TableItemFirstName">${user.firstName || ''}</td>
+            <td id="${user.userId}TableItemLastName">${user.lastName || ''}</td>
+            <td>
+              <button id="${user.userId}TableItemEditButton" class="edit-button">Edit</button>
+              <button id="${user.userId}TableItemDeleteButton" class="delete-button">Delete</button>
+            </td>
+          </tr>`;
+      });
+
       app.innerHTML = `
         <div id="UserManagementPage">
           <h1>User Administration</h1>
           <button id="ButtonAddUser" class="add-button">+</button>
-          
-          <!-- Tabelle der Benutzer -->
           <table id="TableUsers">
             <thead>
               <tr>
@@ -39,19 +46,9 @@ export class UserManagementPOM extends AbstractPOM {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td id="adminTableItemUsername">admin</td>
-                <td id="adminTableItemFirstName">Udo</td>
-                <td id="adminTableItemLastName">Müller</td>
-                <td>
-                  <button id="adminTableItemEditButton" class="edit-button">Edit</button>
-                  <button id="adminTableItemDeleteButton" class="delete-button">Delete</button>
-                </td>
-              </tr>
+              ${tableRows}
             </tbody>
           </table>
-
-          <!-- Formular für neuen Benutzer -->
           <div id="FormAddUser" style="display: none;">
             <h3>User hinzufügen</h3>
             <form>
@@ -75,8 +72,6 @@ export class UserManagementPOM extends AbstractPOM {
               <button type="button" id="FormAddUserCancel" class="btn btn-secondary">Abbrechen</button>
             </form>
           </div>
-
-          <!-- Formular für die Bearbeitung eines gelogten Users -->
           <div id="FormEditUser" style="display: none;">
             <h3>User bearbeiten</h3>
             <form>
@@ -100,12 +95,10 @@ export class UserManagementPOM extends AbstractPOM {
               <button type="button" id="FormEditUserCancel" class="btn btn-secondary">Abbrechen</button>
             </form>
           </div>
-
           <button id="backButton" class="btn btn-secondary mt-2">Zurück</button>
         </div>
       `;
 
-      // Top-Navigation
       topMenu.innerHTML = `
         <div class="container-fluid">
           <a class="navbar-brand" href="#" id="LinkRoot">WE-1 SPA</a>
@@ -129,51 +122,39 @@ export class UserManagementPOM extends AbstractPOM {
         </div>
       `;
 
-      this.attachEventListeners(); // Event-Listener hinzufügen
+      this.attachEventListeners();
       console.log('UserManagementPOM: HTML eingefügt und Event-Listener angehängt');
     }
   }
 
   private attachEventListeners(): void {
-    // Link zur Startseite
     document.getElementById('LinkRoot')?.addEventListener('click', (e) => {
-e.preventDefault();
-
+      e.preventDefault();
       console.log('UserManagementPOM: LinkRoot geklickt');
       this.appManager.showStartPage();
+    });
 
-    }
-  );
-
-    // Link zum Impressum
-    document.getElementById('LinkImpressum')?.addEventListener('click', (e) => { e.preventDefault();
+    document.getElementById('LinkImpressum')?.addEventListener('click', (e) => {
+      e.preventDefault();
       console.log('UserManagementPOM: LinkImpressum geklickt');
       this.appManager.showImpressumPage();
-    }
-  );
+    });
 
-    // Link zu User Management
     document.getElementById('LinkUserManagement')?.addEventListener('click', (e) => {
-    e.preventDefault();
-
+      e.preventDefault();
       console.log('UserManagementPOM: LinkUserManagement geklickt');
       this.appManager.showUserManagementPage();
     });
 
-    // Link zum Logout
     document.getElementById('LinkLogout')?.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('UserManagementPOM: LinkLogout geklickt');
       this.appManager.logout();
-
-
     });
 
-    // Zurück Button
     document.getElementById('backButton')?.addEventListener('click', () => {
       console.log('UserManagementPOM: backButton geklickt');
       this.appManager.showStartPage();
-      
     });
   }
 }

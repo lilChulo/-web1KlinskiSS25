@@ -76,6 +76,9 @@ export class ApplicationManager {
     getUserCount() {
         return this.users.length;
     }
+    getUsers() {
+        return this.users;
+    }
     // Getter für LandingPage POM
     getLandingPagePOM() {
         return this.landingPagePOM;

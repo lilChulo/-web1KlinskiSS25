@@ -1,5 +1,7 @@
+// StartPagePOM.ts
 import { AbstractPOM } from './AbstractPOM';
 import { ApplicationManager } from '../ApplicationManager';
+import { User } from '@domain/User';
 
 export class StartPagePOM extends AbstractPOM {
   constructor(appManager: ApplicationManager) {
@@ -12,6 +14,16 @@ export class StartPagePOM extends AbstractPOM {
 
     const app = document.getElementById('app');
     const topMenu = document.getElementById('TopMenu');
+    const currentUser: User | null = this.appManager.getCurrentUser();
+
+    let welcomeMessage = 'Willkommen!';
+    if (currentUser) {
+      if (currentUser.firstName && currentUser.lastName) {
+        welcomeMessage = `Willkommen, ${currentUser.firstName} ${currentUser.lastName}!`;
+      } else {
+        welcomeMessage = `Willkommen, ${currentUser.userId}!`;
+      }
+    }
 
     // wenn beide Elemente da sind -> Inhalt rein
     if (app && topMenu) {
@@ -21,7 +33,7 @@ export class StartPagePOM extends AbstractPOM {
         <h1>Startseite</h1>
 
         <h2 id="StartPageWelcomeText">
-          Willkommen, das ist der Anfang deiner Seite, wenn alles erfolgreich war solltest du mehr als 0 User sehen.<br>
+          ${welcomeMessage}<br>
           <span id="UserCount">${this.appManager.getUserCount()}</span> User sind registriert!
         </h2>
 

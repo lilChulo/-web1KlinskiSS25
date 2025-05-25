@@ -127,7 +127,12 @@ export class LandingPagePOM extends AbstractPOM {
         (_e = document.getElementById('LinkRoot')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('LandingPagePOM: LinkRoot geklickt');
-            this.appManager.showLandingPage(); // zeigt aktuelle Seite nochmal?
+            if (this.appManager.getCurrentUser()) {
+                this.appManager.showStartPage();
+            }
+            else {
+                this.appManager.showLandingPage();
+            }
         });
         // Link oben  im Menü Impressum
         (_f = document.getElementById('LinkImpressum')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', (e) => {
