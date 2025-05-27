@@ -6,7 +6,7 @@ import { User } from '@domain/User';
 export class UserManagementPOM extends AbstractPOM {
   constructor(appManager: ApplicationManager) {
     super(appManager);
-    console.log('UserManagementPOM: Instanziert');
+    console.log('UserManagementPOM: Instanziert'); // Konstruktor wie immer
   }
 
   public showPage(): void {
@@ -16,9 +16,9 @@ export class UserManagementPOM extends AbstractPOM {
     const topMenu = document.getElementById('TopMenu');
 
     if (app && topMenu) {
-      const users: User[] = (this.appManager as any).getUsers();
+      const users: User[] = (this.appManager as any).getUsers(); //userliste holen
 
-      let tableRows = '';
+      let tableRows = '';   //userdaten in tabelenzeilen konvertiren
       users.forEach(user => {
         tableRows += `
           <tr>
@@ -31,7 +31,7 @@ export class UserManagementPOM extends AbstractPOM {
             </td>
           </tr>`;
       });
-
+//tabelle + formulare
       app.innerHTML = `
         <div id="UserManagementPage">
           <h1>User Administration</h1>
@@ -122,39 +122,41 @@ export class UserManagementPOM extends AbstractPOM {
         </div>
       `;
 
-      this.attachEventListeners();
+      this.attachEventListeners();  //eventhantler binden
       console.log('UserManagementPOM: HTML eingefügt und Event-Listener angehängt');
     }
   }
 
-  private attachEventListeners(): void {
-    document.getElementById('LinkRoot')?.addEventListener('click', (e) => {
-      e.preventDefault();
+  private attachEventListeners(): void { //statseite link und unten impressum user-M. und logout und neu zurück button
+    document.getElementById('LinkRoot')?.addEventListener('click', (e) => {         e.preventDefault();
       console.log('UserManagementPOM: LinkRoot geklickt');
       this.appManager.showStartPage();
     });
 
-    document.getElementById('LinkImpressum')?.addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('LinkImpressum')?.addEventListener('click', (e) => {      e.preventDefault();
+     
       console.log('UserManagementPOM: LinkImpressum geklickt');
       this.appManager.showImpressumPage();
     });
 
-    document.getElementById('LinkUserManagement')?.addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('LinkUserManagement')?.addEventListener('click', (e) => {       e.preventDefault();
+      
       console.log('UserManagementPOM: LinkUserManagement geklickt');
       this.appManager.showUserManagementPage();
     });
 
-    document.getElementById('LinkLogout')?.addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('LinkLogout')?.addEventListener('click', (e) => {       e.preventDefault();
+     
       console.log('UserManagementPOM: LinkLogout geklickt');
       this.appManager.logout();
     });
 
     document.getElementById('backButton')?.addEventListener('click', () => {
+      
       console.log('UserManagementPOM: backButton geklickt');
       this.appManager.showStartPage();
-    });
+    
+    }
+  );
   }
 }

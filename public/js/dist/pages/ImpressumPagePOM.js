@@ -2,13 +2,13 @@ import { AbstractPOM } from './AbstractPOM.js';
 export class ImpressumPagePOM extends AbstractPOM {
     constructor(appManager) {
         super(appManager);
-        console.log('ImpressumPagePOM: Instanziert');
+        console.log('ImpressumPagePOM: Instanziert'); //kontrolle ob seite richtig startet
     }
     showPage() {
         console.log('ImpressumPagePOM: showPage aufgerufen');
-        const app = document.getElementById('app');
+        const app = document.getElementById('app'); //Container-Element für Hauptinhalt
         const topMenu = document.getElementById('TopMenu');
-        if (app && topMenu) { //chatgpt unten zeile 13auch (Text aber selber gemacht(von moodle übernommen))
+        if (app && topMenu) { //chatgpt unten zeile 30 auch (Text aber selber gemacht(von moodle übernommen))
             app.innerHTML = `
         <div id="ImpressumPage">
           <h1>Impressum</h1>
@@ -27,7 +27,9 @@ export class ImpressumPagePOM extends AbstractPOM {
           
         </div>
       `;
+            //gucket on user eingelogt / nicht eingelogt
             const isLoggedIn = this.appManager.getCurrentUser() !== null; //chatgpt (nicht wirklich gecheckt wieso !==null, aber funktioniert also egal)
+            //geguckt: !== prüft ob benutzer vorhanden ist (also eingelogt)
             //struktur (Ordnung) von chatgpt weil meins nicht schön aussah und faul, aber selber gecodet
             topMenu.innerHTML = `
         <div class="container-fluid">
@@ -61,7 +63,7 @@ export class ImpressumPagePOM extends AbstractPOM {
     attachEventListeners() {
         var _a, _b;
         (_a = document.getElementById('LinkRoot')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (e) => {
-            e.preventDefault();
+            e.preventDefault(); // verhindert Standardverhalten (z. B. Seitenreload)
             console.log('ImpressumPagePOM: LinkRoot geklickt');
             if (this.appManager.getCurrentUser()) {
                 this.appManager.showStartPage(); //siehe moodle seite vergessen... auch bei anderen if else
@@ -70,11 +72,13 @@ export class ImpressumPagePOM extends AbstractPOM {
                 this.appManager.showLandingPage();
             }
         });
+        //Event für Klick auf Impressum
         (_b = document.getElementById('LinkImpressum')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('ImpressumPagePOM: LinkImpressum geklickt');
             this.appManager.showImpressumPage();
         });
+        //Event für Klick auf User Management (wenn eingeogt)
         const userManagementLink = document.getElementById('LinkUserManagement');
         if (userManagementLink) {
             userManagementLink.addEventListener('click', (e) => {
@@ -88,7 +92,7 @@ export class ImpressumPagePOM extends AbstractPOM {
             logoutLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 console.log('ImpressumPagePOM: LinkLogout geklickt');
-                this.appManager.logout();
+                this.appManager.logout(); // meldet benutzer ab
             });
         }
     }

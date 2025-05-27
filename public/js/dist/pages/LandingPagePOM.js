@@ -1,14 +1,15 @@
 import { AbstractPOM } from './AbstractPOM.js';
 export class LandingPagePOM extends AbstractPOM {
     constructor(appManager) {
-        super(appManager);
+        super(appManager); //Konstrukto rd beimm erstellen aufgerufen
         console.log('LandingPagePOM: Instanziert'); // Konstruktor -> wird beim Erstellen aufgerufen
     }
     showPage() {
         console.log('LandingPagePOM: showPage aufgerufen');
-        const app = document.getElementById('app');
+        const app = document.getElementById('app'); //conteainer für seiteninhalt
         const topMenu = document.getElementById('TopMenu');
-        if (!app) {
+        if (!app) //haupteelemnte geprüft, ob da
+         {
             console.error('LandingPagePOM: #app Container nicht gefunden'); // fallback falls DOM nicht geladen?
             return;
         }

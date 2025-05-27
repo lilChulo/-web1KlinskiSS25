@@ -1,12 +1,15 @@
 import { AbstractPOM } from './AbstractPOM';
 import { ApplicationManager } from '../ApplicationManager';
 
-export class ImpressumPagePOM extends AbstractPOM 
-{
+export class ImpressumPagePOM extends AbstractPOM {
+
+
   constructor(appManager: ApplicationManager)
+// übergabe des Appmanages an die Klasse
    {
+
     super(appManager);
-    console.log('ImpressumPagePOM: Instanziert');
+    console.log('ImpressumPagePOM: Instanziert'); //kontrolle ob seite richtig startet
 
 
   }
@@ -15,12 +18,13 @@ export class ImpressumPagePOM extends AbstractPOM
   
     console.log('ImpressumPagePOM: showPage aufgerufen');
 
-    const app = document.getElementById('app');
+    const app = document.getElementById('app'); //Container-Element für Hauptinhalt
 
     const topMenu = document.getElementById('TopMenu');
 
-    if (app && topMenu) 
-      {   //chatgpt unten zeile 13auch (Text aber selber gemacht(von moodle übernommen))
+
+
+    if (app && topMenu)   {   //chatgpt unten zeile 30 auch (Text aber selber gemacht(von moodle übernommen))
      
       app.innerHTML = `
         <div id="ImpressumPage">
@@ -40,8 +44,11 @@ export class ImpressumPagePOM extends AbstractPOM
           
         </div>
       `;
-      const isLoggedIn = this.appManager.getCurrentUser() !== null;  //chatgpt (nicht wirklich gecheckt wieso !==null, aber funktioniert also egal)
 
+
+      //gucket on user eingelogt / nicht eingelogt
+      const isLoggedIn = this.appManager.getCurrentUser() !== null;  //chatgpt (nicht wirklich gecheckt wieso !==null, aber funktioniert also egal)
+        //geguckt: !== prüft ob benutzer vorhanden ist (also eingelogt)
 
       //struktur (Ordnung) von chatgpt weil meins nicht schön aussah und faul, aber selber gecodet
       topMenu.innerHTML = `
@@ -75,10 +82,12 @@ export class ImpressumPagePOM extends AbstractPOM
     }
   }
 
-  private attachEventListeners(): void
-       {
+  private attachEventListeners(): void {
+
+
     document.getElementById('LinkRoot')?.addEventListener('click', (e) => {     //chatgpt (auch nicht richtig verstanden, prof nächste mal fragen, falls ich nicht selber rauf komme)
-  e.preventDefault();
+  e.preventDefault(); // verhindert Standardverhalten (z. B. Seitenreload)
+
       console.log('ImpressumPagePOM: LinkRoot geklickt');
 
       if (this.appManager.getCurrentUser()) {
@@ -91,33 +100,36 @@ export class ImpressumPagePOM extends AbstractPOM
     }
   );
 
-    
+    //Event für Klick auf Impressum
   document.getElementById('LinkImpressum')?.addEventListener('click', (e) => { e.preventDefault();
 
       console.log('ImpressumPagePOM: LinkImpressum geklickt');
       this.appManager.showImpressumPage();
     }
   );
-
+    //Event für Klick auf User Management (wenn eingeogt)
     const userManagementLink = document.getElementById('LinkUserManagement');
     if (userManagementLink)
         {
+
       userManagementLink.addEventListener('click', (e) => {  e.preventDefault();
 
         console.log('ImpressumPagePOM: LinkUserManagement geklickt');
 
         this.appManager.showUserManagementPage();
+
       }
-    );  }
+    );     }
 
     const logoutLink = document.getElementById('LinkLogout');
     if (logoutLink) {
+
 
       logoutLink.addEventListener('click', (e) => {     e.preventDefault();
 
 
         console.log('ImpressumPagePOM: LinkLogout geklickt');
-        this.appManager.logout();
+        this.appManager.logout();  // meldet benutzer ab
       
       }    );
     }

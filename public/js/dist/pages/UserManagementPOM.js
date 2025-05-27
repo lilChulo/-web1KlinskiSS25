@@ -3,15 +3,15 @@ import { AbstractPOM } from './AbstractPOM.js';
 export class UserManagementPOM extends AbstractPOM {
     constructor(appManager) {
         super(appManager);
-        console.log('UserManagementPOM: Instanziert');
+        console.log('UserManagementPOM: Instanziert'); // Konstruktor wie immer
     }
     showPage() {
         console.log('UserManagementPOM: showPage aufgerufen');
         const app = document.getElementById('app');
         const topMenu = document.getElementById('TopMenu');
         if (app && topMenu) {
-            const users = this.appManager.getUsers();
-            let tableRows = '';
+            const users = this.appManager.getUsers(); //userliste holen
+            let tableRows = ''; //userdaten in tabelenzeilen konvertiren
             users.forEach(user => {
                 tableRows += `
           <tr>
@@ -24,6 +24,7 @@ export class UserManagementPOM extends AbstractPOM {
             </td>
           </tr>`;
             });
+            //tabelle + formulare
             app.innerHTML = `
         <div id="UserManagementPage">
           <h1>User Administration</h1>
@@ -112,7 +113,7 @@ export class UserManagementPOM extends AbstractPOM {
           </div>
         </div>
       `;
-            this.attachEventListeners();
+            this.attachEventListeners(); //eventhantler binden
             console.log('UserManagementPOM: HTML eingefügt und Event-Listener angehängt');
         }
     }

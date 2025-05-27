@@ -4,7 +4,7 @@ import { ApplicationManager } from '../ApplicationManager';
 export class LandingPagePOM extends AbstractPOM {
   constructor(appManager: ApplicationManager)
    {
-    super(appManager);
+    super(appManager); //Konstrukto rd beimm erstellen aufgerufen
 
     console.log('LandingPagePOM: Instanziert'); // Konstruktor -> wird beim Erstellen aufgerufen
   }
@@ -13,14 +13,14 @@ export class LandingPagePOM extends AbstractPOM {
   {
     console.log('LandingPagePOM: showPage aufgerufen');
 
-    const app = document.getElementById('app');
+    const app = document.getElementById('app'); //conteainer für seiteninhalt
     const topMenu = document.getElementById('TopMenu');
 
 
 
 
 
-    if (!app) 
+    if (!app)  //haupteelemnte geprüft, ob da
       {
 
       console.error('LandingPagePOM: #app Container nicht gefunden'); // fallback falls DOM nicht geladen?

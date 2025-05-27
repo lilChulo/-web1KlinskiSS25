@@ -5,6 +5,7 @@ import { User } from '@domain/User';
 
 export class StartPagePOM extends AbstractPOM {
   constructor(appManager: ApplicationManager) {
+
     super(appManager);
     console.log('StartPagePOM: Instanziert'); // Konstruktor wie immer
   }
@@ -18,15 +19,19 @@ export class StartPagePOM extends AbstractPOM {
 
     let welcomeMessage = 'Willkommen!';
     if (currentUser) {
+
       if (currentUser.firstName && currentUser.lastName) {
         welcomeMessage = `Willkommen, ${currentUser.firstName} ${currentUser.lastName}!`;
+
       } else {
+
         welcomeMessage = `Willkommen, ${currentUser.userId}!`;
       }
     }
 
     // wenn beide Elemente da sind -> Inhalt rein
-    if (app && topMenu) {
+    if (app && topMenu)
+       {
       app.innerHTML = `
         <div id="StartPage">
 
@@ -81,38 +86,40 @@ export class StartPagePOM extends AbstractPOM {
 
   private attachEventListeners(): void {
     // Link oben: zurück zur Startseite
-    document.getElementById('LinkRoot')?.addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('LinkRoot')?.addEventListener('click', (e) => {    e.preventDefault();
       console.log('StartPagePOM: LinkRoot geklickt');
       this.appManager.showStartPage();
     });
 
     // Link oben: Impressum anzeigen
-    document.getElementById('LinkImpressum')?.addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('LinkImpressum')?.addEventListener('click', (e) => {     e.preventDefault();
+
       console.log('StartPagePOM: LinkImpressum geklickt');
       this.appManager.showImpressumPage();
     });
 
     // Logout (oben im Menü)
-    document.getElementById('LinkLogout')?.addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('LinkLogout')?.addEventListener('click', (e) => {    e.preventDefault();
+
+
       console.log('StartPagePOM: LinkLogout geklickt');
       this.appManager.logout(); // abmelden, zurück zur LandingPage?
     });
 
     // Link oben: User Management
-    document.getElementById('LinkUserManagement')?.addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('LinkUserManagement')?.addEventListener('click', (e) => {    e.preventDefault();
+
       console.log('StartPagePOM: LinkUserManagement geklickt');
       this.appManager.showUserManagementPage();
-    });
+    }
+  );
 
     // Link im Textkörper: User Management
-    document.getElementById('StartPageLinkUserManagement')?.addEventListener('click', (e) => {
-      e.preventDefault();
+    document.getElementById('StartPageLinkUserManagement')?.addEventListener('click', (e) => {   e.preventDefault();
       console.log('StartPagePOM: StartPageLinkUserManagement geklickt');
       this.appManager.showUserManagementPage();
+    
+    
     });
   }
 }
