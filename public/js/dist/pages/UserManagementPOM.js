@@ -1,19 +1,29 @@
-// UserManagementPOM.ts
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { AbstractPOM } from './AbstractPOM.js';
 export class UserManagementPOM extends AbstractPOM {
     constructor(appManager) {
         super(appManager);
-        console.log('UserManagementPOM: Instanziert'); // Konstruktor wie immer
+        console.log('UserManagementPOM: Instanziert');
     }
     showPage() {
-        console.log('UserManagementPOM: showPage aufgerufen');
-        const app = document.getElementById('app');
-        const topMenu = document.getElementById('TopMenu');
-        if (app && topMenu) {
-            const users = this.appManager.getUsers(); //userliste holen
-            let tableRows = ''; //userdaten in tabelenzeilen konvertiren
-            users.forEach(user => {
-                tableRows += `
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log('UserManagementPOM: showPage aufgerufen');
+            const app = document.getElementById('app');
+            const topMenu = document.getElementById('TopMenu');
+            if (app && topMenu) {
+                // User vom Server holen (fetchUsers() muss im ApplicationManager implementiert sein)
+                const users = yield this.appManager.fetchUsers();
+                let tableRows = '';
+                users.forEach(user => {
+                    tableRows += `
           <tr>
             <td id="${user.userId}TableItemUsername">${user.userId}</td>
             <td id="${user.userId}TableItemFirstName">${user.firstName || ''}</td>
@@ -23,9 +33,8 @@ export class UserManagementPOM extends AbstractPOM {
               <button id="${user.userId}TableItemDeleteButton" class="delete-button">Delete</button>
             </td>
           </tr>`;
-            });
-            //tabelle + formulare
-            app.innerHTML = `
+                });
+                app.innerHTML = `
         <div id="UserManagementPage">
           <h1>User Administration</h1>
           <button id="ButtonAddUser" class="add-button">+</button>
@@ -91,7 +100,7 @@ export class UserManagementPOM extends AbstractPOM {
           <button id="backButton" class="btn btn-secondary mt-2">Zurück</button>
         </div>
       `;
-            topMenu.innerHTML = `
+                topMenu.innerHTML = `
         <div class="container-fluid">
           <a class="navbar-brand" href="#" id="LinkRoot">WE-1 SPA</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
@@ -113,9 +122,10 @@ export class UserManagementPOM extends AbstractPOM {
           </div>
         </div>
       `;
-            this.attachEventListeners(); //eventhantler binden
-            console.log('UserManagementPOM: HTML eingefügt und Event-Listener angehängt');
-        }
+                this.attachEventListeners();
+                console.log('UserManagementPOM: HTML eingefügt und Event-Listener angehängt');
+            }
+        });
     }
     attachEventListeners() {
         var _a, _b, _c, _d, _e;

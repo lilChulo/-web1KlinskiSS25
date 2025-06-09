@@ -1,6 +1,6 @@
 import { ApplicationManager } from './ApplicationManager';
 
-document.addEventListener('DOMContentLoaded', () =>
+document.addEventListener('DOMContentLoaded', async () =>
   
   {
   console.log('ApplicationLoader: DOMContentLoaded');
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () =>
     const appManager = new ApplicationManager();
     console.log('ApplicationLoader: ApplicationManager instanziert');
 
-    appManager.start();
+    await appManager.start();
     console.log('ApplicationLoader: ApplicationManager.start aufgerufen');
 
   }

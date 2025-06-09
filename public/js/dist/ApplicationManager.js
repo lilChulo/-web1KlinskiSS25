@@ -1,60 +1,162 @@
-import { User } from './domain/User.js';
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { LandingPagePOM } from './pages/LandingPagePOM.js';
 import { StartPagePOM } from './pages/StartPagePOM.js';
 import { ImpressumPagePOM } from './pages/ImpressumPagePOM.js';
 import { UserManagementPOM } from './pages/UserManagementPOM.js';
 export class ApplicationManager {
     constructor() {
-        this.users = []; // Liste aller Benutzer
-        this.currentUser = null; // Der aktuell eingeloggte Benutzer
+        this.currentUser = null;
+        this.usersCache = [];
         console.log('ApplicationManager: Instanziert');
-        this.users.push(new User('admin', '123', 'Manfred', 'Mustermann')); // Standardbenutzer 'admin' hinzufügen
         this.landingPagePOM = new LandingPagePOM(this);
         this.startPagePOM = new StartPagePOM(this);
         this.impressumPagePOM = new ImpressumPagePOM(this);
         this.userManagementPOM = new UserManagementPOM(this);
     }
-    // Startet die Landingpage
     start() {
-        this.landingPagePOM.showPage();
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.ensureDefaultAdminUserExists();
+            yield this.refreshUsersCache(); // User Cache initial befüllen
+            this.landingPagePOM.showPage();
+        });
     }
-    // Registrierung eines neuen Benutzers
-    registerUser(userId, password, firstName, lastName) {
-        if (!userId || !password) {
-            this.showToast('User-ID und Passwort dürfen nicht leer sein.', false);
-            return false;
-        }
-        if (this.users.find(u => u.userId === userId)) {
-            this.showToast('User-ID existiert bereits.', false);
-            return false;
-        }
-        this.users.push(new User(userId, password, firstName, lastName));
-        this.showToast('Registrierung erfolgreich.', true);
-        return true;
+    ensureDefaultAdminUserExists() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield fetch('/api/users/admin');
+                if (response.status === 404) {
+                    const createResponse = yield fetch('/api/users', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: 'admin',
+                            password: '123',
+                            firstName: 'Manfred',
+                            lastName: 'Mustermann',
+                        }),
+                    });
+                    if (!createResponse.ok) {
+                        console.warn('Standard-Admin konnte nicht angelegt werden.');
+                    }
+                    else {
+                        console.log('Standard-Admin wurde automatisch angelegt.');
+                    }
+                }
+                else if (response.ok) {
+                    console.log('Standard-Admin existiert bereits.');
+                }
+                else {
+                    console.warn('Fehler beim Überprüfen des Admin-Users.');
+                }
+            }
+            catch (error) {
+                console.error('Fehler beim Anlegen des Admin-Users:', error);
+            }
+        });
     }
-    // Benutzeranmeldung
     login(userId, password) {
-        if (!userId || !password) {
-            this.showToast('User-ID und Passwort dürfen nicht leer sein.', false);
-            return false;
-        }
-        const user = this.users.find(u => u.userId === userId && u.password === password);
-        if (user) {
-            this.currentUser = user;
-            this.showToast('Login erfolgreich.', true);
-            this.startPagePOM.showPage();
-            return true;
-        }
-        this.showToast('Login fehlerhaft.', false);
-        return false;
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!userId || !password) {
+                this.showToast('User-ID und Passwort dürfen nicht leer sein.', false);
+                return false;
+            }
+            try {
+                const basicAuth = btoa(`${userId}:${password}`);
+                const response = yield fetch('/api/login', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Basic ${basicAuth}`,
+                    },
+                });
+                if (response.ok) {
+                    this.currentUser = yield response.json();
+                    yield this.refreshUsersCache();
+                    // Toast und Seitenwechsel NICHT hier, sondern im LandingPagePOM
+                    return true;
+                }
+                else {
+                    // Toast NICHT hier, sondern im LandingPagePOM
+                    return false;
+                }
+            }
+            catch (error) {
+                console.error('Login-Fehler:', error);
+                // Toast NICHT hier, sondern im LandingPagePOM
+                return false;
+            }
+        });
     }
-    // Abmeldung des aktuellen Benutzers
     logout() {
         this.currentUser = null;
         this.landingPagePOM.showPage();
         this.showToast('Logout erfolgreich.', true);
     }
-    // Anzeige einer Toast-Nachricht
+    registerUser(userId, password, firstName, lastName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!userId || !password) {
+                this.showToast('User-ID und Passwort dürfen nicht leer sein.', false);
+                return false;
+            }
+            try {
+                const response = yield fetch('/api/users', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, password, firstName, lastName }),
+                });
+                if (response.ok) {
+                    this.showToast('Registrierung erfolgreich.', true);
+                    yield this.refreshUsersCache();
+                    return true;
+                }
+                else {
+                    const errorData = yield response.json();
+                    this.showToast(errorData.message || 'Registrierung fehlgeschlagen.', false);
+                    return false;
+                }
+            }
+            catch (error) {
+                console.error('Registrierungsfehler:', error);
+                this.showToast('Fehler bei der Registrierung.', false);
+                return false;
+            }
+        });
+    }
+    fetchUsers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield fetch('/api/users');
+                if (response.ok) {
+                    const users = yield response.json();
+                    return users;
+                }
+                else {
+                    this.showToast('Fehler beim Laden der Nutzer.', false);
+                    return [];
+                }
+            }
+            catch (error) {
+                console.error('Fehler beim Laden der Nutzer:', error);
+                this.showToast('Fehler beim Laden der Nutzer.', false);
+                return [];
+            }
+        });
+    }
+    refreshUsersCache() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.usersCache = yield this.fetchUsers();
+        });
+    }
+    getUserCount() {
+        return this.usersCache.length;
+    }
     showToast(message, success) {
         const toast = document.getElementById('toast');
         if (!toast) {
@@ -68,47 +170,33 @@ export class ApplicationManager {
             toast.style.display = 'none';
         }, 3000);
     }
-    // Getter für den aktuellen Benutzer
     getCurrentUser() {
         return this.currentUser;
     }
-    // Anzahl der registrierten Benutzer
-    getUserCount() {
-        return this.users.length;
-    }
-    getUsers() {
-        return this.users;
-    }
-    // Getter für LandingPage POM
     getLandingPagePOM() {
         return this.landingPagePOM;
     }
-    // Getter für StartPage POM
     getStartPagePOM() {
         return this.startPagePOM;
     }
-    // Getter für ImpressumPage POM
     getImpressumPagePOM() {
         return this.impressumPagePOM;
     }
-    // Getter für UserManagementPage POM
     getUserManagementPOM() {
         return this.userManagementPOM;
     }
-    // LandingPage anzeigen
     showLandingPage() {
         this.landingPagePOM.showPage();
     }
-    // StartPage anzeigen
     showStartPage() {
         this.startPagePOM.showPage();
     }
-    // ImpressumPage anzeigen
     showImpressumPage() {
         this.impressumPagePOM.showPage();
     }
-    // UserManagementPage anzeigen
     showUserManagementPage() {
-        this.userManagementPOM.showPage();
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.userManagementPOM.showPage();
+        });
     }
 }

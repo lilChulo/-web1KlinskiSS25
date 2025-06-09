@@ -1,25 +1,32 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import { AbstractPOM } from './AbstractPOM.js';
 export class LandingPagePOM extends AbstractPOM {
     constructor(appManager) {
-        super(appManager); //Konstrukto rd beimm erstellen aufgerufen
-        console.log('LandingPagePOM: Instanziert'); // Konstruktor -> wird beim Erstellen aufgerufen
+        super(appManager);
+        console.log('LandingPagePOM: Instanziert');
     }
     showPage() {
         console.log('LandingPagePOM: showPage aufgerufen');
-        const app = document.getElementById('app'); //conteainer für seiteninhalt
+        const app = document.getElementById('app');
         const topMenu = document.getElementById('TopMenu');
-        if (!app) //haupteelemnte geprüft, ob da
-         {
-            console.error('LandingPagePOM: #app Container nicht gefunden'); // fallback falls DOM nicht geladen?
+        if (!app) {
+            console.error('LandingPagePOM: #app Container nicht gefunden');
             return;
         }
         if (!topMenu) {
             console.error('LandingPagePOM: #TopMenu nicht gefunden');
             return;
         }
-        app.innerHTML = `      <!--  code selber aber struktur bisschen mit chatgpt verschönert, meins sah schlimm aus (merke: html struktur übern!) -->
+        app.innerHTML = `
       <div id="LandingPage">
-
         <div id="FormLogin" class="card">
           <div class="card-body">
             <h2 class="card-title">Login</h2>
@@ -53,81 +60,100 @@ export class LandingPagePOM extends AbstractPOM {
             <a href="#" id="LinkShowLoginDialog" class="d-block mt-2">Zum Login</a>
           </div>
         </div>
-
       </div>
     `;
-        // Menü oben setzen
         topMenu.innerHTML = `
       <div class="container-fluid">
         <a class="navbar-brand" href="#" id="LinkRoot">WE-1 SPA</a>
-
-
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
           data-bs-target="#navbarNav" aria-controls="navbarNav"
           aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-       </button>
-
+          <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
-         <li class="nav-item">
-            <a class="nav-link" href="#" id="LinkImpressum">Impressum</a>
-         </li>
-        </ul>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="LinkImpressum">Impressum</a>
+            </li>
+          </ul>
         </div>
       </div>
     `;
         console.log('LandingPagePOM: HTML eingefügt');
         this.attachEventListeners();
-        // wichtig! sonst geht nix
         console.log('LandingPagePOM: Event-Listener angehängt');
     }
     attachEventListeners() {
         var _a, _b, _c, _d, _e, _f;
-        // Link: zeigt Registrierungsformular
         (_a = document.getElementById('LinkShowSignupDialog')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('LandingPagePOM: LinkShowSignupDialog geklickt');
-            document.getElementById('FormLogin').style.display = 'none';
-            document.getElementById('FormSignup').style.display = 'block';
+            const loginForm = document.getElementById('FormLogin');
+            if (loginForm)
+                loginForm.style.display = 'none';
+            const signupForm = document.getElementById('FormSignup');
+            if (signupForm)
+                signupForm.style.display = 'block';
         });
-        // Link: zurück zum Login
         (_b = document.getElementById('LinkShowLoginDialog')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('LandingPagePOM: LinkShowLoginDialog geklickt');
-            document.getElementById('FormSignup').style.display = 'none';
-            document.getElementById('FormLogin').style.display = 'block';
+            const signupForm = document.getElementById('FormSignup');
+            if (signupForm)
+                signupForm.style.display = 'none';
+            const loginForm = document.getElementById('FormLogin');
+            if (loginForm)
+                loginForm.style.display = 'block';
         });
-        // Login Button gedrückt
-        (_c = document.getElementById('ButtonLoginUser')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', () => {
+        (_c = document.getElementById('ButtonLoginUser')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            var _a, _b;
             console.log('LandingPagePOM: ButtonLoginUser geklickt');
-            const username = document.getElementById('FormLoginUsername').value;
-            const password = document.getElementById('FormLoginPassword').value;
-            if (this.appManager.login(username, password)) {
-                // Felder leeren wenn Login ok war
-                document.getElementById('FormLoginUsername').value = '';
-                document.getElementById('FormLoginPassword').value = '';
+            const usernameInput = document.getElementById('FormLoginUsername');
+            const passwordInput = document.getElementById('FormLoginPassword');
+            const username = (_a = usernameInput === null || usernameInput === void 0 ? void 0 : usernameInput.value) !== null && _a !== void 0 ? _a : '';
+            const password = (_b = passwordInput === null || passwordInput === void 0 ? void 0 : passwordInput.value) !== null && _b !== void 0 ? _b : '';
+            const credentials = btoa(`${username}:${password}`);
+            try {
+                const response = yield fetch('/api/login', {
+                    method: 'GET', // oder POST, je nachdem wie dein Backend es erwartet
+                    headers: {
+                        'Authorization': `Basic ${credentials}`
+                    }
+                });
+                if (response.ok) {
+                    this.appManager['currentUser'] = yield response.json();
+                    // Formulare leeren **vor** Seitenwechsel
+                    if (usernameInput)
+                        usernameInput.value = '';
+                    if (passwordInput)
+                        passwordInput.value = '';
+                    this.appManager.showToast('Login erfolgreich.', true);
+                    this.appManager.showStartPage();
+                }
+                else {
+                    this.appManager.showToast('Login fehlerhaft.', false);
+                }
             }
-        });
-        // Registrierung absenden
-        (_d = document.getElementById('ButtonSignupUser')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', () => {
+            catch (error) {
+                console.error('Login-Fehler:', error);
+                this.appManager.showToast('Login-Fehler.', false);
+            }
+        }));
+        (_d = document.getElementById('ButtonSignupUser')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
             console.log('LandingPagePOM: ButtonSignupUser geklickt');
             const username = document.getElementById('FormSignupUsername').value;
             const password = document.getElementById('FormSignupPassword').value;
             const firstName = document.getElementById('FormSignupFirstName').value;
             const lastName = document.getElementById('FormSignupLastName').value;
-            if (this.appManager.registerUser(username, password, firstName, lastName)) {
-                // Felder zurücksetzen
+            if (yield this.appManager.registerUser(username, password, firstName, lastName)) {
                 document.getElementById('FormSignupUsername').value = '';
                 document.getElementById('FormSignupPassword').value = '';
                 document.getElementById('FormSignupFirstName').value = '';
                 document.getElementById('FormSignupLastName').value = '';
             }
-        });
-        // Link oben im Menü Startseite
+        }));
         (_e = document.getElementById('LinkRoot')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log('LandingPagePOM: LinkRoot geklickt');
             if (this.appManager.getCurrentUser()) {
                 this.appManager.showStartPage();
             }
@@ -135,10 +161,8 @@ export class LandingPagePOM extends AbstractPOM {
                 this.appManager.showLandingPage();
             }
         });
-        // Link oben  im Menü Impressum
         (_f = document.getElementById('LinkImpressum')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log('LandingPagePOM: LinkImpressum geklickt');
             this.appManager.showImpressumPage();
         });
     }
