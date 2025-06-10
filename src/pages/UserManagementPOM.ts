@@ -4,6 +4,7 @@ import { User } from '@domain/User';
 
 export class UserManagementPOM extends AbstractPOM {
   constructor(appManager: ApplicationManager) {
+    
     super(appManager);
     console.log('UserManagementPOM: Instanziert');
   }

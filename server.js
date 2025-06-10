@@ -149,5 +149,5 @@ app.delete('/api/users/:id', (req, res) => {
 
 // Server starten
 app.listen(port, () => {
-  console.log(`✅ Server läuft unter http://localhost:${port}`);
+  console.log(` Server läuft unter http://localhost:${port}`);
 });

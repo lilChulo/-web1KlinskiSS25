@@ -63,6 +63,7 @@ export class ImpressumPagePOM extends AbstractPOM {
     attachEventListeners() {
         var _a, _b;
         (_a = document.getElementById('LinkRoot')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (e) => {
+            //chatgpt (auch nicht richtig verstanden, prof nächste mal fragen, falls ich nicht selber rauf komme)
             e.preventDefault(); // verhindert Standardverhalten (z. B. Seitenreload)
             console.log('ImpressumPagePOM: LinkRoot geklickt');
             if (this.appManager.getCurrentUser()) {

@@ -11,23 +11,27 @@ import { LandingPagePOM } from './pages/LandingPagePOM.js';
 import { StartPagePOM } from './pages/StartPagePOM.js';
 import { ImpressumPagePOM } from './pages/ImpressumPagePOM.js';
 import { UserManagementPOM } from './pages/UserManagementPOM.js';
+// Zentrale Verwaltung der App (UI-Logik & Nutzersteuerung)
 export class ApplicationManager {
     constructor() {
         this.currentUser = null;
         this.usersCache = [];
-        console.log('ApplicationManager: Instanziert');
+        console.log('ApplicationManager: initialisiert');
+        // Seiten-Objekte erzeugen
         this.landingPagePOM = new LandingPagePOM(this);
         this.startPagePOM = new StartPagePOM(this);
         this.impressumPagePOM = new ImpressumPagePOM(this);
         this.userManagementPOM = new UserManagementPOM(this);
     }
+    // Einstiegspunkt
     start() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.ensureDefaultAdminUserExists();
-            yield this.refreshUsersCache(); // User Cache initial befüllen
+            yield this.refreshUsersCache();
             this.landingPagePOM.showPage();
         });
     }
+    // Prüft, ob ein Admin existiert – sonst wird einer erstellt
     ensureDefaultAdminUserExists() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -35,7 +39,9 @@ export class ApplicationManager {
                 if (response.status === 404) {
                     const createResponse = yield fetch('/api/users', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
                         body: JSON.stringify({
                             userId: 'admin',
                             password: '123',
@@ -62,6 +68,7 @@ export class ApplicationManager {
             }
         });
     }
+    // Login-Funktion mit Basic Auth
     login(userId, password) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!userId || !password) {
@@ -73,32 +80,31 @@ export class ApplicationManager {
                 const response = yield fetch('/api/login', {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Basic ${basicAuth}`,
+                        Authorization: `Basic ${basicAuth}`,
                     },
                 });
                 if (response.ok) {
                     this.currentUser = yield response.json();
                     yield this.refreshUsersCache();
-                    // Toast und Seitenwechsel NICHT hier, sondern im LandingPagePOM
                     return true;
                 }
                 else {
-                    // Toast NICHT hier, sondern im LandingPagePOM
                     return false;
                 }
             }
             catch (error) {
                 console.error('Login-Fehler:', error);
-                // Toast NICHT hier, sondern im LandingPagePOM
                 return false;
             }
         });
     }
+    // Logout: User wird entfernt und zur Startseite navigiert
     logout() {
         this.currentUser = null;
         this.landingPagePOM.showPage();
         this.showToast('Logout erfolgreich.', true);
     }
+    // Registrierung eines neuen Users
     registerUser(userId, password, firstName, lastName) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!userId || !password) {
@@ -129,6 +135,7 @@ export class ApplicationManager {
             }
         });
     }
+    // Alle Nutzer von der API laden
     fetchUsers() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -149,18 +156,21 @@ export class ApplicationManager {
             }
         });
     }
+    // Aktualisiert lokalen Cache
     refreshUsersCache() {
         return __awaiter(this, void 0, void 0, function* () {
             this.usersCache = yield this.fetchUsers();
         });
     }
+    // Anzahl der geladenen Nutzer (aus dem Cache)
     getUserCount() {
         return this.usersCache.length;
     }
+    // Zeigt eine Benachrichtigung an (Toast)
     showToast(message, success) {
         const toast = document.getElementById('toast');
         if (!toast) {
-            console.error('ApplicationManager: Toast-Element nicht gefunden');
+            console.error('Toast-Element nicht gefunden');
             return;
         }
         toast.textContent = message;
@@ -170,6 +180,7 @@ export class ApplicationManager {
             toast.style.display = 'none';
         }, 3000);
     }
+    // Getter-Methoden für aktuelle Daten und Seiten
     getCurrentUser() {
         return this.currentUser;
     }
@@ -185,6 +196,7 @@ export class ApplicationManager {
     getUserManagementPOM() {
         return this.userManagementPOM;
     }
+    // Navigationsmethoden für Seiten
     showLandingPage() {
         this.landingPagePOM.showPage();
     }

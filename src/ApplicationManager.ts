@@ -4,6 +4,7 @@ import { ImpressumPagePOM } from './pages/ImpressumPagePOM';
 import { UserManagementPOM } from './pages/UserManagementPOM';
 import { User } from '@domain/User';
 
+// Zentrale Verwaltung der App (UI-Logik & Nutzersteuerung)
 export class ApplicationManager {
   private currentUser: User | null = null;
   private usersCache: User[] = [];
@@ -14,27 +15,33 @@ export class ApplicationManager {
   private userManagementPOM: UserManagementPOM;
 
   constructor() {
-    console.log('ApplicationManager: Instanziert');
+    console.log('ApplicationManager: initialisiert');
 
+    // Seiten-Objekte erzeugen
     this.landingPagePOM = new LandingPagePOM(this);
     this.startPagePOM = new StartPagePOM(this);
     this.impressumPagePOM = new ImpressumPagePOM(this);
     this.userManagementPOM = new UserManagementPOM(this);
   }
 
+  // Einstiegspunkt
   public async start(): Promise<void> {
     await this.ensureDefaultAdminUserExists();
-    await this.refreshUsersCache();  // User Cache initial befüllen
+    await this.refreshUsersCache();
     this.landingPagePOM.showPage();
   }
 
+  // Prüft, ob ein Admin existiert – sonst wird einer erstellt
   private async ensureDefaultAdminUserExists(): Promise<void> {
     try {
       const response = await fetch('/api/users/admin');
+
       if (response.status === 404) {
         const createResponse = await fetch('/api/users', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+          },
           body: JSON.stringify({
             userId: 'admin',
             password: '123',
@@ -58,6 +65,7 @@ export class ApplicationManager {
     }
   }
 
+  // Login-Funktion mit Basic Auth
   public async login(userId: string, password: string): Promise<boolean> {
     if (!userId || !password) {
       this.showToast('User-ID und Passwort dürfen nicht leer sein.', false);
@@ -70,33 +78,37 @@ export class ApplicationManager {
       const response = await fetch('/api/login', {
         method: 'GET',
         headers: {
-          'Authorization': `Basic ${basicAuth}`,
+          Authorization: `Basic ${basicAuth}`,
         },
       });
 
       if (response.ok) {
         this.currentUser = await response.json();
         await this.refreshUsersCache();
-        // Toast und Seitenwechsel NICHT hier, sondern im LandingPagePOM
         return true;
       } else {
-        // Toast NICHT hier, sondern im LandingPagePOM
         return false;
       }
     } catch (error) {
       console.error('Login-Fehler:', error);
-      // Toast NICHT hier, sondern im LandingPagePOM
       return false;
     }
   }
 
+  // Logout: User wird entfernt und zur Startseite navigiert
   public logout(): void {
     this.currentUser = null;
     this.landingPagePOM.showPage();
     this.showToast('Logout erfolgreich.', true);
   }
 
-  public async registerUser(userId: string, password: string, firstName: string, lastName: string): Promise<boolean> {
+  // Registrierung eines neuen Users
+  public async registerUser(
+    userId: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+  ): Promise<boolean> {
     if (!userId || !password) {
       this.showToast('User-ID und Passwort dürfen nicht leer sein.', false);
       return false;
@@ -125,9 +137,11 @@ export class ApplicationManager {
     }
   }
 
+  // Alle Nutzer von der API laden
   public async fetchUsers(): Promise<User[]> {
     try {
       const response = await fetch('/api/users');
+
       if (response.ok) {
         const users: User[] = await response.json();
         return users;
@@ -142,19 +156,22 @@ export class ApplicationManager {
     }
   }
 
+  // Aktualisiert lokalen Cache
   public async refreshUsersCache(): Promise<void> {
     this.usersCache = await this.fetchUsers();
   }
 
+  // Anzahl der geladenen Nutzer (aus dem Cache)
   public getUserCount(): number {
     return this.usersCache.length;
   }
 
+  // Zeigt eine Benachrichtigung an (Toast)
   public showToast(message: string, success: boolean): void {
     const toast = document.getElementById('toast');
 
     if (!toast) {
-      console.error('ApplicationManager: Toast-Element nicht gefunden');
+      console.error('Toast-Element nicht gefunden');
       return;
     }
 
@@ -167,6 +184,7 @@ export class ApplicationManager {
     }, 3000);
   }
 
+  // Getter-Methoden für aktuelle Daten und Seiten
   public getCurrentUser(): User | null {
     return this.currentUser;
   }
@@ -187,6 +205,7 @@ export class ApplicationManager {
     return this.userManagementPOM;
   }
 
+  // Navigationsmethoden für Seiten
   public showLandingPage(): void {
     this.landingPagePOM.showPage();
   }
