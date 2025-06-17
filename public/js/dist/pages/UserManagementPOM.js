@@ -18,140 +18,138 @@ export class UserManagementPOM extends AbstractPOM {
             console.log('UserManagementPOM: showPage aufgerufen');
             const app = document.getElementById('app');
             const topMenu = document.getElementById('TopMenu');
-            if (app && topMenu) {
-                // User vom Server holen (fetchUsers() muss im ApplicationManager implementiert sein)
-                const users = yield this.appManager.fetchUsers();
-                let tableRows = '';
-                users.forEach(user => {
-                    tableRows += `
-          <tr>
-            <td id="${user.userId}TableItemUsername">${user.userId}</td>
-            <td id="${user.userId}TableItemFirstName">${user.firstName || ''}</td>
-            <td id="${user.userId}TableItemLastName">${user.lastName || ''}</td>
-            <td>
-              <button id="${user.userId}TableItemEditButton" class="edit-button">Edit</button>
-              <button id="${user.userId}TableItemDeleteButton" class="delete-button">Delete</button>
-            </td>
-          </tr>`;
-                });
-                app.innerHTML = `
-        <div id="UserManagementPage">
-          <h1>User Administration</h1>
-          <button id="ButtonAddUser" class="add-button">+</button>
-          <table id="TableUsers">
-            <thead>
-              <tr>
-                <th>User-ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${tableRows}
-            </tbody>
-          </table>
-          <div id="FormAddUser" style="display: none;">
-            <h3>User hinzufügen</h3>
-            <form>
-              <div class="form-group">
-                <label for="FormAddUserUsername">User-ID:</label>
-                <input type="text" id="FormAddUserUsername" class="form-control" required>
-              </div>
-              <div class="form-group">
-                <label for="FormAddUserPassword">Passwort:</label>
-                <input type="password" id="FormAddUserPassword" class="form-control" required>
-              </div>
-              <div class="form-group">
-                <label for="FormAddUserFirstName">Vorname:</label>
-                <input type="text" id="FormAddUserFirstName" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="FormAddUserLastName">Nachname:</label>
-                <input type="text" id="FormAddUserLastName" class="form-control">
-              </div>
-              <button type="submit" id="FormAddUserSubmit" class="btn btn-primary">Hinzufügen</button>
-              <button type="button" id="FormAddUserCancel" class="btn btn-secondary">Abbrechen</button>
-            </form>
-          </div>
-          <div id="FormEditUser" style="display: none;">
-            <h3>User bearbeiten</h3>
-            <form>
-              <div class="form-group">
-                <label for="FormEditUserUsername">User-ID:</label>
-                <input type="text" id="FormEditUserUsername" class="form-control" readonly>
-              </div>
-              <div class="form-group">
-                <label for="FormEditUserPassword">Passwort:</label>
-                <input type="password" id="FormEditUserPassword" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="FormEditUserFirstName">Vorname:</label>
-                <input type="text" id="FormEditUserFirstName" class="form-control">
-              </div>
-              <div class="form-group">
-                <label for="FormEditUserLastName">Nachname:</label>
-                <input type="text" id="FormEditUserLastName" class="form-control">
-              </div>
-              <button type="submit" id="FormEditUserSubmit" class="btn btn-primary">Speichern</button>
-              <button type="button" id="FormEditUserCancel" class="btn btn-secondary">Abbrechen</button>
-            </form>
-          </div>
-          <button id="backButton" class="btn btn-secondary mt-2">Zurück</button>
-        </div>
-      `;
-                topMenu.innerHTML = `
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#" id="LinkRoot">WE-1 SPA</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="#" id="LinkImpressum">Impressum</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" id="LinkUserManagement">User Management</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#" id="LinkLogout">Logout</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      `;
-                this.attachEventListeners();
-                console.log('UserManagementPOM: HTML eingefügt und Event-Listener angehängt');
+            if (!app || !topMenu)
+                return;
+            try {
+                const res = yield fetch('/html/user-management.html');
+                if (!res.ok)
+                    throw new Error('Fehler beim Laden der User Management HTML');
+                app.innerHTML = yield res.text();
             }
+            catch (error) {
+                console.error('UserManagementPOM: Fehler beim Laden der Seite:', error);
+                app.innerHTML = '<p>Fehler beim Laden der Benutzerverwaltung.</p>';
+                return;
+            }
+            // Benutzer laden und Tabelle füllen
+            yield this.refreshUserTable();
+            // Menü aktualisieren
+            this.renderTopMenu();
+            // Event Listener anhängen
+            this.attachEventListeners();
+            console.log('UserManagementPOM: HTML eingefügt und Event-Listener angehängt');
         });
     }
+    refreshUserTable() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const users = yield this.appManager.fetchUsers();
+            const tbody = document.querySelector('#TableUsers tbody');
+            if (!tbody)
+                return;
+            tbody.innerHTML = users.map(user => `
+      <tr>
+        <td>${user.userId}</td>
+        <td>${user.firstName || ''}</td>
+        <td>${user.lastName || ''}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" disabled>Edit</button>
+          <button class="btn btn-sm btn-danger" disabled>Delete</button>
+        </td>
+      </tr>
+    `).join('');
+        });
+    }
+    renderTopMenu() {
+        const topMenu = document.getElementById('TopMenu');
+        if (!topMenu)
+            return;
+        topMenu.innerHTML = `
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#" id="LinkRoot">WE-1 SPA</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="LinkImpressum">Impressum</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="LinkUserManagement">User Management</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="LinkLogout">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    `;
+    }
     attachEventListeners() {
-        var _a, _b, _c, _d, _e;
-        (_a = document.getElementById('LinkRoot')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (e) => {
+        var _a, _b, _c, _d;
+        // Navigation Links
+        (_a = document.getElementById('LinkRoot')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', e => {
             e.preventDefault();
-            console.log('UserManagementPOM: LinkRoot geklickt');
             this.appManager.showStartPage();
         });
-        (_b = document.getElementById('LinkImpressum')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', (e) => {
+        (_b = document.getElementById('LinkImpressum')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', e => {
             e.preventDefault();
-            console.log('UserManagementPOM: LinkImpressum geklickt');
             this.appManager.showImpressumPage();
         });
-        (_c = document.getElementById('LinkUserManagement')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', (e) => {
+        (_c = document.getElementById('LinkUserManagement')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', e => {
             e.preventDefault();
-            console.log('UserManagementPOM: LinkUserManagement geklickt');
             this.appManager.showUserManagementPage();
         });
-        (_d = document.getElementById('LinkLogout')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', (e) => {
+        (_d = document.getElementById('LinkLogout')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', e => {
             e.preventDefault();
-            console.log('UserManagementPOM: LinkLogout geklickt');
             this.appManager.logout();
         });
-        (_e = document.getElementById('backButton')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', () => {
-            console.log('UserManagementPOM: backButton geklickt');
-            this.appManager.showStartPage();
+        // Button User hinzufügen - Formular anzeigen
+        const btnAddUser = document.getElementById('ButtonAddUser');
+        const formAddUser = document.getElementById('FormAddUser');
+        btnAddUser === null || btnAddUser === void 0 ? void 0 : btnAddUser.addEventListener('click', () => {
+            if (formAddUser) {
+                formAddUser.style.display = 'block';
+            }
         });
+        // Formular Abbrechen
+        const btnCancel = document.getElementById('FormAddUserCancel');
+        btnCancel === null || btnCancel === void 0 ? void 0 : btnCancel.addEventListener('click', () => {
+            if (formAddUser) {
+                formAddUser.style.display = 'none';
+            }
+            this.clearAddUserForm();
+        });
+        // Formular Submit (User hinzufügen)
+        const form = document.getElementById('AddUserForm');
+        form === null || form === void 0 ? void 0 : form.addEventListener('submit', (event) => __awaiter(this, void 0, void 0, function* () {
+            event.preventDefault();
+            const userId = document.getElementById('FormAddUserUsername').value.trim();
+            const password = document.getElementById('FormAddUserPassword').value.trim();
+            const firstName = document.getElementById('FormAddUserFirstName').value.trim();
+            const lastName = document.getElementById('FormAddUserLastName').value.trim();
+            if (!userId || !password) {
+                this.appManager.showToast('User-ID und Passwort dürfen nicht leer sein.', false);
+                return;
+            }
+            const success = yield this.appManager.registerUser(userId, password, firstName, lastName);
+            if (success) {
+                this.appManager.showToast('User erfolgreich hinzugefügt.', true);
+                if (formAddUser)
+                    formAddUser.style.display = 'none';
+                this.clearAddUserForm();
+                yield this.refreshUserTable();
+            }
+            else {
+                this.appManager.showToast('Fehler beim Hinzufügen des Users.', false);
+            }
+        }));
+    }
+    clearAddUserForm() {
+        document.getElementById('FormAddUserUsername').value = '';
+        document.getElementById('FormAddUserPassword').value = '';
+        document.getElementById('FormAddUserFirstName').value = '';
+        document.getElementById('FormAddUserLastName').value = '';
     }
 }

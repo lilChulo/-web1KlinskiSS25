@@ -111,7 +111,7 @@ export class ApplicationManager {
                 this.showToast('User-ID und Passwort dürfen nicht leer sein.', false);
                 return false;
             }
-            try {
+            try { //gpt hilfe
                 const response = yield fetch('/api/users', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

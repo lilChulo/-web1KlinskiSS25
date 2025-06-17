@@ -1,0 +1,44 @@
+<div id="UserManagementPage" class="container mt-4">
+  <h1>User Administration</h1>
+
+  <button id="ButtonAddUser" class="btn btn-success mb-3">+</button>
+
+  <table id="TableUsers" class="table table-striped">
+    <thead>
+      <tr>
+        <th>User-ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Dynamisch per TypeScript befüllt -->
+    </tbody>
+  </table>
+
+  <!-- Formular: User hinzufügen -->
+  <div id="FormAddUser" style="display: none;">
+    <h3>User hinzufügen</h3>
+    <form id="AddUserForm">
+      <div class="mb-3">
+        <label for="FormAddUserUsername" class="form-label">User-ID:</label>
+        <input type="text" id="FormAddUserUsername" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="FormAddUserPassword" class="form-label">Passwort:</label>
+        <input type="password" id="FormAddUserPassword" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="FormAddUserFirstName" class="form-label">Vorname:</label>
+        <input type="text" id="FormAddUserFirstName" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="FormAddUserLastName" class="form-label">Nachname:</label>
+        <input type="text" id="FormAddUserLastName" class="form-control">
+      </div>
+      <button type="submit" id="FormAddUserSubmit" class="btn btn-primary">Hinzufügen</button>
+      <button type="button" id="FormAddUserCancel" class="btn btn-secondary">Abbrechen</button>
+    </form>
+  </div>
+</div>

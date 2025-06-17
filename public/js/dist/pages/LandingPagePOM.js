@@ -11,47 +11,29 @@ import { AbstractPOM } from './AbstractPOM.js';
 export class LandingPagePOM extends AbstractPOM {
     constructor(appManager) {
         super(appManager);
-        console.log('LandingPagePOM instanziiert'); //zum Testen
+        console.log('LandingPagePOM instanziiert');
     }
     showPage() {
-        console.log('LandingPagePOM: showPage läuft');
-        const app = document.getElementById('app');
-        const topMenu = document.getElementById('TopMenu');
-        if (!app) {
-            console.log('kein app-Container');
-            return;
-        }
-        if (!topMenu) {
-            console.log('kein TopMenu');
-            return;
-        }
-        app.innerHTML = `
-      <div id="LandingPage">
-        <div id="FormLogin" class="card">
-          <div class="card-body">
-            <h2>Login</h2>
-            <input type="text" id="FormLoginUsername" class="form-control" placeholder="Username">
-            <input type="password" id="FormLoginPassword" class="form-control" placeholder="Password">
-            <button id="ButtonLoginUser" class="btn btn-primary">Login</button>
-            <a href="#" id="LinkShowSignupDialog">Registrieren</a>
-          </div>
-        </div>
-
-        <div id="FormSignup" class="card" style="display: none;">
-          <div class="card-body">
-            <h2>Registrieren</h2>
-            <input type="text" id="FormSignupUsername" class="form-control" placeholder="Username">
-            <input type="password" id="FormSignupPassword" class="form-control" placeholder="Password">
-            <input type="text" id="FormSignupFirstName" class="form-control" placeholder="Vorname">
-            <input type="text" id="FormSignupLastName" class="form-control" placeholder="Nachname">
-            <button id="ButtonSignupUser" class="btn btn-primary">Registrieren</button>
-            <a href="#" id="LinkShowLoginDialog">Zum Login</a>
-          </div>
-        </div>
-      </div>
-    `;
-        // Navbar oben (nicht hübsch, funktioniert aber)
-        topMenu.innerHTML = `
+        return __awaiter(this, void 0, void 0, function* () {
+            const app = document.getElementById('app');
+            const topMenu = document.getElementById('TopMenu');
+            if (!app || !topMenu) {
+                console.error('Fehlende Container: app oder TopMenu');
+                return;
+            }
+            // 1. HTML nachladen
+            try {
+                const res = yield fetch('/html/landingpage.html'); // oder /templates/landingpage.html
+                const html = yield res.text();
+                app.innerHTML = html;
+            }
+            catch (err) {
+                console.error('Fehler beim Laden der Landingpage:', err);
+                app.innerHTML = '<p>Fehler beim Laden der Seite.</p>';
+                return;
+            }
+            // 2. Menü aktualisieren
+            topMenu.innerHTML = `
       <div class="container-fluid">
         <a class="navbar-brand" href="#" id="LinkRoot">WE-1 SPA</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -68,56 +50,39 @@ export class LandingPagePOM extends AbstractPOM {
         </div>
       </div>
     `;
-        this.attachEventListeners(); // Event-Handling extra
+            // 3. Event-Listener setzen
+            this.attachEventListeners();
+        });
     }
     attachEventListeners() {
         var _a, _b, _c, _d, _e, _f;
         // Wechsel zu Registrierung
         (_a = document.getElementById('LinkShowSignupDialog')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', (e) => {
             e.preventDefault();
-            const login = document.getElementById('FormLogin');
-            const signup = document.getElementById('FormSignup');
-            if (login)
-                login.style.display = 'none';
-            if (signup)
-                signup.style.display = 'block';
+            this.toggleForms(false);
         });
         // zurück zu Login
         (_b = document.getElementById('LinkShowLoginDialog')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', (e) => {
             e.preventDefault();
-            const login = document.getElementById('FormLogin');
-            const signup = document.getElementById('FormSignup');
-            if (signup)
-                signup.style.display = 'none';
-            if (login)
-                login.style.display = 'block';
+            this.toggleForms(true);
         });
-        // Login-Button
+        // Login
         (_c = document.getElementById('ButtonLoginUser')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
-            var _a, _b;
-            const usernameInput = document.getElementById('FormLoginUsername');
-            const passwordInput = document.getElementById('FormLoginPassword');
-            const username = (_a = usernameInput === null || usernameInput === void 0 ? void 0 : usernameInput.value) !== null && _a !== void 0 ? _a : '';
-            const password = (_b = passwordInput === null || passwordInput === void 0 ? void 0 : passwordInput.value) !== null && _b !== void 0 ? _b : '';
-            const credentials = btoa(`${username}:${password}`);
+            const uname = document.getElementById('FormLoginUsername').value;
+            const pw = document.getElementById('FormLoginPassword').value;
+            const credentials = btoa(`${uname}:${pw}`);
             try {
                 const res = yield fetch('/api/login', {
                     method: 'GET',
-                    headers: {
-                        'Authorization': `Basic ${credentials}`
-                    }
+                    headers: { Authorization: `Basic ${credentials}` }
                 });
                 if (res.ok) {
                     this.appManager['currentUser'] = yield res.json();
-                    if (usernameInput)
-                        usernameInput.value = '';
-                    if (passwordInput)
-                        passwordInput.value = '';
                     this.appManager.showToast('Login erfolgreich.', true);
                     this.appManager.showStartPage();
                 }
                 else {
-                    this.appManager.showToast('Login fehlerhaft.', false);
+                    this.appManager.showToast('Login fehlgeschlagen.', false);
                 }
             }
             catch (err) {
@@ -125,7 +90,7 @@ export class LandingPagePOM extends AbstractPOM {
                 this.appManager.showToast('Login-Fehler.', false);
             }
         }));
-        // Registrirung
+        // Registrierung
         (_d = document.getElementById('ButtonSignupUser')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
             const uname = document.getElementById('FormSignupUsername').value;
             const pw = document.getElementById('FormSignupPassword').value;
@@ -133,26 +98,37 @@ export class LandingPagePOM extends AbstractPOM {
             const lname = document.getElementById('FormSignupLastName').value;
             const success = yield this.appManager.registerUser(uname, pw, fname, lname);
             if (success) {
-                document.getElementById('FormSignupUsername').value = '';
-                document.getElementById('FormSignupPassword').value = '';
-                document.getElementById('FormSignupFirstName').value = '';
-                document.getElementById('FormSignupLastName').value = '';
+                this.clearSignupForm();
+                this.toggleForms(true);
             }
         }));
-        // Root Link klick (Startseite oder Landing, je nachdem)
+        // Root Link
         (_e = document.getElementById('LinkRoot')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', (e) => {
             e.preventDefault();
-            if (this.appManager.getCurrentUser()) {
-                this.appManager.showStartPage();
-            }
-            else {
-                this.appManager.showLandingPage();
-            }
+            this.appManager.getCurrentUser()
+                ? this.appManager.showStartPage()
+                : this.appManager.showLandingPage();
         });
-        // Impressum anzeigen
+        // Impressum
         (_f = document.getElementById('LinkImpressum')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', (e) => {
             e.preventDefault();
             this.appManager.showImpressumPage();
+        });
+    }
+    toggleForms(showLogin) {
+        const login = document.getElementById('FormLogin');
+        const signup = document.getElementById('FormSignup');
+        if (login)
+            login.style.display = showLogin ? 'block' : 'none';
+        if (signup)
+            signup.style.display = showLogin ? 'none' : 'block';
+    }
+    clearSignupForm() {
+        ['FormSignupUsername', 'FormSignupPassword', 'FormSignupFirstName', 'FormSignupLastName']
+            .forEach(id => {
+            const el = document.getElementById(id);
+            if (el)
+                el.value = '';
         });
     }
 }
