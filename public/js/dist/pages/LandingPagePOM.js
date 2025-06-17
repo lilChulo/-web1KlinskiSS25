@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { AbstractPOM } from './AbstractPOM.js';
-export class LandingPagePOM extends AbstractPOM {
+export class LandingPagePOM extends AbstractPOM { //test
     constructor(appManager) {
         super(appManager);
         console.log('LandingPagePOM instanziiert');
@@ -23,7 +23,7 @@ export class LandingPagePOM extends AbstractPOM {
             }
             // 1. HTML nachladen
             try {
-                const res = yield fetch('/html/landingpage.html');
+                const res = yield fetch('/html/landingpage.html'); // oder /templates/landingpage.html
                 const html = yield res.text();
                 app.innerHTML = html;
             }
