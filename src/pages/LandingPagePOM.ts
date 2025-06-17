@@ -4,56 +4,30 @@ import { ApplicationManager } from '../ApplicationManager';
 export class LandingPagePOM extends AbstractPOM {
   constructor(appManager: ApplicationManager) {
     super(appManager);
-    console.log('LandingPagePOM instanziiert'); //zum Testen
+    console.log('LandingPagePOM instanziiert');
   }
 
-  public showPage(): void {
-    console.log('LandingPagePOM: showPage läuft');
-
+  public async showPage(): Promise<void> {
     const app = document.getElementById('app');
-
     const topMenu = document.getElementById('TopMenu');
 
-
-
-    if (!app) {
-      console.log('kein app-Container');
-      return;
-    
-    }
-
-    if (!topMenu) {
-      console.log('kein TopMenu');
+    if (!app || !topMenu) {
+      console.error('Fehlende Container: app oder TopMenu');
       return;
     }
 
-    app.innerHTML = `
-      <div id="LandingPage">
-        <div id="FormLogin" class="card">
-          <div class="card-body">
-            <h2>Login</h2>
-            <input type="text" id="FormLoginUsername" class="form-control" placeholder="Username">
-            <input type="password" id="FormLoginPassword" class="form-control" placeholder="Password">
-            <button id="ButtonLoginUser" class="btn btn-primary">Login</button>
-            <a href="#" id="LinkShowSignupDialog">Registrieren</a>
-          </div>
-        </div>
+    // 1. HTML nachladen
+    try {
+      const res = await fetch('/html/landingpage.html'); 
+      const html = await res.text();
+      app.innerHTML = html;
+    } catch (err) {
+      console.error('Fehler beim Laden der Landingpage:', err);
+      app.innerHTML = '<p>Fehler beim Laden der Seite.</p>';
+      return;
+    }
 
-        <div id="FormSignup" class="card" style="display: none;">
-          <div class="card-body">
-            <h2>Registrieren</h2>
-            <input type="text" id="FormSignupUsername" class="form-control" placeholder="Username">
-            <input type="password" id="FormSignupPassword" class="form-control" placeholder="Password">
-            <input type="text" id="FormSignupFirstName" class="form-control" placeholder="Vorname">
-            <input type="text" id="FormSignupLastName" class="form-control" placeholder="Nachname">
-            <button id="ButtonSignupUser" class="btn btn-primary">Registrieren</button>
-            <a href="#" id="LinkShowLoginDialog">Zum Login</a>
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Navbar oben (nicht hübsch, funktioniert aber)
+    // 2. Menü aktualisieren
     topMenu.innerHTML = `
       <div class="container-fluid">
         <a class="navbar-brand" href="#" id="LinkRoot">WE-1 SPA</a>
@@ -72,107 +46,90 @@ export class LandingPagePOM extends AbstractPOM {
       </div>
     `;
 
-    this.attachEventListeners(); // Event-Handling extra
+    // 3. Event-Listener setzen
+    this.attachEventListeners();
   }
 
   private attachEventListeners(): void {
     // Wechsel zu Registrierung
     document.getElementById('LinkShowSignupDialog')?.addEventListener('click', (e) => {
-
       e.preventDefault();
-
-      const login = document.getElementById('FormLogin');
-      const signup = document.getElementById('FormSignup');
-
-      if (login) login.style.display = 'none';
-      if (signup) signup.style.display = 'block';
-
+      this.toggleForms(false);
     });
 
     // zurück zu Login
     document.getElementById('LinkShowLoginDialog')?.addEventListener('click', (e) => {
       e.preventDefault();
-
-      const login = document.getElementById('FormLogin');
-      const signup = document.getElementById('FormSignup');
-
-      if (signup) signup.style.display = 'none';
-      if (login) login.style.display = 'block';
+      this.toggleForms(true);
     });
 
-    // Login-Button
+    // Login
     document.getElementById('ButtonLoginUser')?.addEventListener('click', async () => {
-      const usernameInput = document.getElementById('FormLoginUsername') as HTMLInputElement;
-      const passwordInput = document.getElementById('FormLoginPassword') as HTMLInputElement;
+      const uname = (document.getElementById('FormLoginUsername') as HTMLInputElement).value;
+      const pw = (document.getElementById('FormLoginPassword') as HTMLInputElement).value;
 
-      const username = usernameInput?.value ?? '';
-      const password = passwordInput?.value ?? '';
-
-      const credentials = btoa(`${username}:${password}`);
+      const credentials = btoa(`${uname}:${pw}`);
 
       try {
         const res = await fetch('/api/login', {
           method: 'GET',
-          headers: {
-            'Authorization': `Basic ${credentials}`
-          }
+          headers: { Authorization: `Basic ${credentials}` }
         });
 
         if (res.ok) {
           this.appManager['currentUser'] = await res.json();
-          if (usernameInput) usernameInput.value = '';
-          if (passwordInput) passwordInput.value = '';
           this.appManager.showToast('Login erfolgreich.', true);
           this.appManager.showStartPage();
-
         } else {
-          this.appManager.showToast('Login fehlerhaft.', false);
+          this.appManager.showToast('Login fehlgeschlagen.', false);
         }
       } catch (err) {
-
-
         console.error('Fehler beim Login:', err);
         this.appManager.showToast('Login-Fehler.', false);
       }
     });
 
-    // Registrirung
+    // Registrierung
     document.getElementById('ButtonSignupUser')?.addEventListener('click', async () => {
-
       const uname = (document.getElementById('FormSignupUsername') as HTMLInputElement).value;
       const pw = (document.getElementById('FormSignupPassword') as HTMLInputElement).value;
       const fname = (document.getElementById('FormSignupFirstName') as HTMLInputElement).value;
       const lname = (document.getElementById('FormSignupLastName') as HTMLInputElement).value;
 
       const success = await this.appManager.registerUser(uname, pw, fname, lname);
-
-      if (success) 
-        {
-        (document.getElementById('FormSignupUsername') as HTMLInputElement).value = '';
-        (document.getElementById('FormSignupPassword') as HTMLInputElement).value = '';
-        (document.getElementById('FormSignupFirstName') as HTMLInputElement).value = '';
-        (document.getElementById('FormSignupLastName') as HTMLInputElement).value = '';
+      if (success) {
+        this.clearSignupForm();
+        this.toggleForms(true);
       }
     });
 
-    // Root Link klick (Startseite oder Landing, je nachdem)
+    // Root Link
     document.getElementById('LinkRoot')?.addEventListener('click', (e) => {
       e.preventDefault();
-
-      if (this.appManager.getCurrentUser())
-         {
-        this.appManager.showStartPage();
-      } else 
-      {
-        this.appManager.showLandingPage();
-      }
+      this.appManager.getCurrentUser()
+        ? this.appManager.showStartPage()
+        : this.appManager.showLandingPage();
     });
 
-    // Impressum anzeigen
+    // Impressum
     document.getElementById('LinkImpressum')?.addEventListener('click', (e) => {
       e.preventDefault();
-
       this.appManager.showImpressumPage();
     });
+  }
+
+  private toggleForms(showLogin: boolean): void {
+    const login = document.getElementById('FormLogin');
+    const signup = document.getElementById('FormSignup');
+    if (login) login.style.display = showLogin ? 'block' : 'none';
+    if (signup) signup.style.display = showLogin ? 'none' : 'block';
+  }
+
+  private clearSignupForm(): void {
+    ['FormSignupUsername', 'FormSignupPassword', 'FormSignupFirstName', 'FormSignupLastName']
+      .forEach(id => {
+        const el = document.getElementById(id) as HTMLInputElement;
+        if (el) el.value = '';
+      });
   }
 }

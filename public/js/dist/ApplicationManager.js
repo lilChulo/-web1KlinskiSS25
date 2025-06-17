@@ -28,7 +28,7 @@ export class ApplicationManager {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.ensureDefaultAdminUserExists();
             yield this.refreshUsersCache();
-            this.landingPagePOM.showPage();
+            yield this.landingPagePOM.showPage();
         });
     }
     // Prüft, ob ein Admin existiert – sonst wird einer erstellt
@@ -111,7 +111,7 @@ export class ApplicationManager {
                 this.showToast('User-ID und Passwort dürfen nicht leer sein.', false);
                 return false;
             }
-            try {
+            try { //gpt hilfe
                 const response = yield fetch('/api/users', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

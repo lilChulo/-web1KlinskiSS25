@@ -28,11 +28,11 @@ export class ApplicationManager {
   public async start(): Promise<void> {
     await this.ensureDefaultAdminUserExists();
     await this.refreshUsersCache();
-    this.landingPagePOM.showPage();
+    await this.landingPagePOM.showPage();
   }
 
   // Prüft, ob ein Admin existiert – sonst wird einer erstellt
-  private async ensureDefaultAdminUserExists(): Promise<void> {
+  private async ensureDefaultAdminUserExists(): Promise<void> {  //chatgpt hilfe
     try {
       const response = await fetch('/api/users/admin');
 
@@ -114,7 +114,7 @@ export class ApplicationManager {
       return false;
     }
 
-    try {
+    try { //gpt hilfe
       const response = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -222,3 +222,5 @@ export class ApplicationManager {
     await this.userManagementPOM.showPage();
   }
 }
+
+
