@@ -27,7 +27,6 @@ export class LandingPagePOM extends AbstractPOM {
       return;
     }
 
-    // 2. Menü aktualisieren
     topMenu.innerHTML = `
       <div class="container-fluid">
         <a class="navbar-brand" href="#" id="LinkRoot">WE-1 SPA</a>
@@ -46,7 +45,6 @@ export class LandingPagePOM extends AbstractPOM {
       </div>
     `;
 
-    // 3. Event-Listener setzen
     this.attachEventListeners();
   }
 

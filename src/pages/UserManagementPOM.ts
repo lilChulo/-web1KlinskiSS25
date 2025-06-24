@@ -125,7 +125,7 @@ export class UserManagementPOM extends AbstractPOM {
       this.clearAddUserForm();
     });
 
-    // Formular Submit (User hinzufügen)
+    // User hinzufügen
     const form = document.getElementById('AddUserForm') as HTMLFormElement | null;
     form?.addEventListener('submit', async (event) => {
       event.preventDefault();

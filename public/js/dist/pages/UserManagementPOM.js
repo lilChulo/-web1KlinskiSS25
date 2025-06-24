@@ -33,9 +33,7 @@ export class UserManagementPOM extends AbstractPOM {
             }
             // Benutzer laden und Tabelle füllen
             yield this.refreshUserTable();
-            // Menü aktualisieren
             this.renderTopMenu();
-            // Event Listener anhängen
             this.attachEventListeners();
             console.log('UserManagementPOM: HTML eingefügt und Event-Listener angehängt');
         });
@@ -105,7 +103,7 @@ export class UserManagementPOM extends AbstractPOM {
             e.preventDefault();
             this.appManager.logout();
         });
-        // Button User hinzufügen - Formular anzeigen
+        // Button User hinzufügen
         const btnAddUser = document.getElementById('ButtonAddUser');
         const formAddUser = document.getElementById('FormAddUser');
         btnAddUser === null || btnAddUser === void 0 ? void 0 : btnAddUser.addEventListener('click', () => {
@@ -121,7 +119,7 @@ export class UserManagementPOM extends AbstractPOM {
             }
             this.clearAddUserForm();
         });
-        // Formular Submit (User hinzufügen)
+        //User hinzufügen
         const form = document.getElementById('AddUserForm');
         form === null || form === void 0 ? void 0 : form.addEventListener('submit', (event) => __awaiter(this, void 0, void 0, function* () {
             event.preventDefault();

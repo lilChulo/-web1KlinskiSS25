@@ -18,8 +18,9 @@ export class StartPagePOM extends AbstractPOM {
             var _a, _b;
             console.log("StartPagePOM: showPage aufgerufen");
             const app = document.getElementById("app");
+            const topMenu = document.getElementById("TopMenu");
             const currentUser = this.appManager.getCurrentUser();
-            if (!app) {
+            if (!app || !topMenu) {
                 console.error("StartPagePOM: Container fehlt");
                 return;
             }
@@ -32,7 +33,31 @@ export class StartPagePOM extends AbstractPOM {
                 const htmlContent = yield response.text();
                 // HTML-Content in den Container einfügen
                 app.innerHTML = htmlContent;
-                // Welcome Text dynamisch setzen
+                
+                topMenu.innerHTML = `
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#" id="LinkRoot">WE-1 SPA</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="#" id="LinkImpressum">Impressum</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" id="LinkUserManagement">User Management</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" id="LinkLogout">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      `;
+               
                 const welcomeText = document.getElementById("StartPageWelcomeText");
                 if (welcomeText) {
                     let welcomeMessage = "Willkommen!";

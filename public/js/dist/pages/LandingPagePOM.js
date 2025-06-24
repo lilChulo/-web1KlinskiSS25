@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { AbstractPOM } from './AbstractPOM.js';
-export class LandingPagePOM extends AbstractPOM { //test
+export class LandingPagePOM extends AbstractPOM {
     constructor(appManager) {
         super(appManager);
         console.log('LandingPagePOM instanziiert');
@@ -21,9 +21,8 @@ export class LandingPagePOM extends AbstractPOM { //test
                 console.error('Fehlende Container: app oder TopMenu');
                 return;
             }
-            // 1. HTML nachladen
             try {
-                const res = yield fetch('/html/landingpage.html'); // oder /templates/landingpage.html
+                const res = yield fetch('/html/landingpage.html');
                 const html = yield res.text();
                 app.innerHTML = html;
             }
@@ -32,7 +31,6 @@ export class LandingPagePOM extends AbstractPOM { //test
                 app.innerHTML = '<p>Fehler beim Laden der Seite.</p>';
                 return;
             }
-            // 2. Menü aktualisieren
             topMenu.innerHTML = `
       <div class="container-fluid">
         <a class="navbar-brand" href="#" id="LinkRoot">WE-1 SPA</a>
@@ -50,7 +48,6 @@ export class LandingPagePOM extends AbstractPOM { //test
         </div>
       </div>
     `;
-            // 3. Event-Listener setzen
             this.attachEventListeners();
         });
     }
