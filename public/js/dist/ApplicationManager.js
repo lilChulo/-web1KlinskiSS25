@@ -111,7 +111,7 @@ export class ApplicationManager {
                 this.showToast('User-ID und Passwort dürfen nicht leer sein.', false);
                 return false;
             }
-            try { //gpt hilfe
+            try {
                 const response = yield fetch('/api/users', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -131,6 +131,58 @@ export class ApplicationManager {
             catch (error) {
                 console.error('Registrierungsfehler:', error);
                 this.showToast('Fehler bei der Registrierung.', false);
+                return false;
+            }
+        });
+    }
+    // Aktualisiert einen bestehenden Nutzer
+    updateUser(user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield fetch(`/api/users/${user.userId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(user),
+                });
+                if (response.ok) {
+                    this.showToast('Benutzer erfolgreich aktualisiert.', true);
+                    yield this.refreshUsersCache();
+                    return true;
+                }
+                else {
+                    const errorData = yield response.json();
+                    this.showToast(errorData.message || 'Aktualisierung fehlgeschlagen.', false);
+                    return false;
+                }
+            }
+            catch (error) {
+                console.error('Fehler beim Aktualisieren des Benutzers:', error);
+                this.showToast('Fehler beim Aktualisieren des Benutzers.', false);
+                return false;
+            }
+        });
+    }
+    // Löscht einen Nutzer
+    deleteUser(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield fetch(`/api/users/${userId}`, {
+                    method: 'DELETE',
+                });
+                if (response.ok) {
+                    this.showToast('Benutzer erfolgreich gelöscht.', true);
+                    yield this.refreshUsersCache();
+                    return true;
+                }
+                else {
+                    const errorData = yield response.json();
+                    this.showToast(errorData.message || 'Löschen fehlgeschlagen.', false);
+                    return false;
+                }
+            }
+            catch (error) {
+                console.error('Fehler beim Löschen des Benutzers:', error);
+                this.showToast('Fehler beim Löschen des Benutzers.', false);
                 return false;
             }
         });

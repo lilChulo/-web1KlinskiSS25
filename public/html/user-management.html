@@ -41,4 +41,26 @@
       <button type="button" id="FormAddUserCancel" class="btn btn-secondary">Abbrechen</button>
     </form>
   </div>
+
+  <!-- Formular: User bearbeiten -->
+  <div id="FormEditUser" style="display: none;">
+    <h3>User bearbeiten</h3>
+    <form id="EditUserForm">
+      <input type="hidden" id="FormEditUserUsername">
+      <div class="mb-3">
+        <label for="FormEditUserPassword" class="form-label">Neues Passwort:</label>
+        <input type="password" id="FormEditUserPassword" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="FormEditUserFirstName" class="form-label">Vorname:</label>
+        <input type="text" id="FormEditUserFirstName" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="FormEditUserLastName" class="form-label">Nachname:</label>
+        <input type="text" id="FormEditUserLastName" class="form-control">
+      </div>
+      <button type="submit" id="FormEditUserSubmit" class="btn btn-primary">Speichern</button>
+      <button type="button" id="FormEditUserCancel" class="btn btn-secondary">Abbrechen</button>
+    </form>
+  </div>
 </div>

@@ -31,9 +31,7 @@ export class StartPagePOM extends AbstractPOM {
                     throw new Error(`Fehler beim Laden der Startseite: ${response.statusText}`);
                 }
                 const htmlContent = yield response.text();
-                // HTML-Content in den Container einfügen
                 app.innerHTML = htmlContent;
-                
                 topMenu.innerHTML = `
         <div class="container-fluid">
           <a class="navbar-brand" href="#" id="LinkRoot">WE-1 SPA</a>
@@ -57,7 +55,6 @@ export class StartPagePOM extends AbstractPOM {
           </div>
         </div>
       `;
-               
                 const welcomeText = document.getElementById("StartPageWelcomeText");
                 if (welcomeText) {
                     let welcomeMessage = "Willkommen!";

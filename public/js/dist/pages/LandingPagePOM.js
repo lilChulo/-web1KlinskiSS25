@@ -21,6 +21,7 @@ export class LandingPagePOM extends AbstractPOM {
                 console.error('Fehlende Container: app oder TopMenu');
                 return;
             }
+            // 1. HTML nachladen
             try {
                 const res = yield fetch('/html/landingpage.html');
                 const html = yield res.text();

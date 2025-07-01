@@ -26,13 +26,8 @@ export class UserManagementPOM extends AbstractPOM {
       return;
     }
 
-    // Benutzer laden und Tabelle füllen
     await this.refreshUserTable();
-
-    // Menü aktualisieren
     this.renderTopMenu();
-
-    // Event Listener anhängen
     this.attachEventListeners();
 
     console.log('UserManagementPOM: HTML eingefügt und Event-Listener angehängt');
@@ -44,16 +39,93 @@ export class UserManagementPOM extends AbstractPOM {
     if (!tbody) return;
 
     tbody.innerHTML = users.map(user => `
-      <tr>
+      <tr data-userid="${user.userId}">
         <td>${user.userId}</td>
         <td>${user.firstName || ''}</td>
         <td>${user.lastName || ''}</td>
         <td>
-          <button class="btn btn-sm btn-primary" disabled>Edit</button>
-          <button class="btn btn-sm btn-danger" disabled>Delete</button>
+          <button class="btn btn-sm btn-primary btn-edit">Edit</button>
+          <button class="btn btn-sm btn-danger btn-delete">Delete</button>
         </td>
       </tr>
     `).join('');
+
+    // Event Listener für Edit/Delete Buttons
+    tbody.querySelectorAll('.btn-delete').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const tr = (e.target as HTMLElement).closest('tr');
+        if (!tr) return;
+        const userId = tr.getAttribute('data-userid');
+        if (!userId) return;
+
+        const confirmed = confirm(`User "${userId}" wirklich löschen?`);
+        if (!confirmed) return;
+
+        const success = await this.appManager.deleteUser(userId);
+        if (success) {
+          this.appManager.showToast('User gelöscht.', true);
+          await this.refreshUserTable();
+        } else {
+          this.appManager.showToast('Löschen fehlgeschlagen.', false);
+        }
+      });
+    });
+
+    tbody.querySelectorAll('.btn-edit').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const tr = (e.target as HTMLElement).closest('tr');
+        if (!tr) return;
+        const userId = tr.getAttribute('data-userid');
+        if (!userId) return;
+
+        const user = users.find(u => u.userId === userId);
+        if (!user) return;
+
+        const formEdit = document.getElementById('FormEditUser') as HTMLDivElement;
+        if (!formEdit) return;
+
+        // Felder setzen
+        (document.getElementById('FormEditUserUsername') as HTMLInputElement).value = user.userId;
+        (document.getElementById('FormEditUserFirstName') as HTMLInputElement).value = user.firstName || '';
+        (document.getElementById('FormEditUserLastName') as HTMLInputElement).value = user.lastName || '';
+        (document.getElementById('FormEditUserPassword') as HTMLInputElement).value = '';
+
+        formEdit.style.display = 'block';
+      });
+    });
+
+    // Edit-Formular: Event-Handler sicherstellen
+    const editForm = document.getElementById('EditUserForm') as HTMLFormElement;
+    editForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const userId = (document.getElementById('FormEditUserUsername') as HTMLInputElement).value;
+      const firstName = (document.getElementById('FormEditUserFirstName') as HTMLInputElement).value;
+      const lastName = (document.getElementById('FormEditUserLastName') as HTMLInputElement).value;
+      const password = (document.getElementById('FormEditUserPassword') as HTMLInputElement).value;
+
+      const user: User = {
+  userId,
+  password,
+  firstName,
+  lastName,
+};
+
+const success = await this.appManager.updateUser(user);
+
+      if (success) {
+        this.appManager.showToast('User aktualisiert.', true);
+        (document.getElementById('FormEditUser') as HTMLDivElement).style.display = 'none';
+        await this.refreshUserTable();
+      } else {
+        this.appManager.showToast('Aktualisierung fehlgeschlagen.', false);
+      }
+    });
+
+    document.getElementById('FormEditUserCancel')?.addEventListener('click', () => {
+      const formEdit = document.getElementById('FormEditUser') as HTMLDivElement;
+      if (formEdit) formEdit.style.display = 'none';
+    });
   }
 
   private renderTopMenu(): void {
@@ -85,7 +157,6 @@ export class UserManagementPOM extends AbstractPOM {
   }
 
   private attachEventListeners(): void {
-    // Navigation Links
     document.getElementById('LinkRoot')?.addEventListener('click', e => {
       e.preventDefault();
       this.appManager.showStartPage();
@@ -106,26 +177,18 @@ export class UserManagementPOM extends AbstractPOM {
       this.appManager.logout();
     });
 
-    // Button User hinzufügen - Formular anzeigen
     const btnAddUser = document.getElementById('ButtonAddUser');
     const formAddUser = document.getElementById('FormAddUser');
 
     btnAddUser?.addEventListener('click', () => {
-      if (formAddUser) {
-        formAddUser.style.display = 'block';
-      }
+      if (formAddUser) formAddUser.style.display = 'block';
     });
 
-    // Formular Abbrechen
-    const btnCancel = document.getElementById('FormAddUserCancel');
-    btnCancel?.addEventListener('click', () => {
-      if (formAddUser) {
-        formAddUser.style.display = 'none';
-      }
+    document.getElementById('FormAddUserCancel')?.addEventListener('click', () => {
+      if (formAddUser) formAddUser.style.display = 'none';
       this.clearAddUserForm();
     });
 
-    // User hinzufügen
     const form = document.getElementById('AddUserForm') as HTMLFormElement | null;
     form?.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -141,7 +204,6 @@ export class UserManagementPOM extends AbstractPOM {
       }
 
       const success = await this.appManager.registerUser(userId, password, firstName, lastName);
-
       if (success) {
         this.appManager.showToast('User erfolgreich hinzugefügt.', true);
         if (formAddUser) formAddUser.style.display = 'none';

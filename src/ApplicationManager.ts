@@ -32,7 +32,7 @@ export class ApplicationManager {
   }
 
   // Prüft, ob ein Admin existiert – sonst wird einer erstellt
-  private async ensureDefaultAdminUserExists(): Promise<void> {  //chatgpt hilfe
+  private async ensureDefaultAdminUserExists(): Promise<void> {
     try {
       const response = await fetch('/api/users/admin');
 
@@ -114,7 +114,7 @@ export class ApplicationManager {
       return false;
     }
 
-    try { //gpt hilfe
+    try {
       const response = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -133,6 +133,54 @@ export class ApplicationManager {
     } catch (error) {
       console.error('Registrierungsfehler:', error);
       this.showToast('Fehler bei der Registrierung.', false);
+      return false;
+    }
+  }
+
+  // Aktualisiert einen bestehenden Nutzer
+  public async updateUser(user: User): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/users/${user.userId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+      });
+
+      if (response.ok) {
+        this.showToast('Benutzer erfolgreich aktualisiert.', true);
+        await this.refreshUsersCache();
+        return true;
+      } else {
+        const errorData = await response.json();
+        this.showToast(errorData.message || 'Aktualisierung fehlgeschlagen.', false);
+        return false;
+      }
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Benutzers:', error);
+      this.showToast('Fehler beim Aktualisieren des Benutzers.', false);
+      return false;
+    }
+  }
+
+  // Löscht einen Nutzer
+  public async deleteUser(userId: string): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/users/${userId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        this.showToast('Benutzer erfolgreich gelöscht.', true);
+        await this.refreshUsersCache();
+        return true;
+      } else {
+        const errorData = await response.json();
+        this.showToast(errorData.message || 'Löschen fehlgeschlagen.', false);
+        return false;
+      }
+    } catch (error) {
+      console.error('Fehler beim Löschen des Benutzers:', error);
+      this.showToast('Fehler beim Löschen des Benutzers.', false);
       return false;
     }
   }
@@ -222,5 +270,3 @@ export class ApplicationManager {
     await this.userManagementPOM.showPage();
   }
 }
-
-
